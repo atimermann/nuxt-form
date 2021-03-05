@@ -1,0 +1,29 @@
+{
+  "name": "@atimermann/nuxt-form",
+  "version": "0.0.1",
+  "description": "Gerador de Formulário para o nuxt framework",
+  "main": "src/nuxt-form.vue",
+  "scripts": {
+    "build": "npx tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atimermann/nuxt-form.git"
+  },
+  "keywords": [
+    "form",
+    "nuxt"
+  ],
+  "author": "André Timermann <andre@timermann.com.br> (http://andre.timermann.com.br)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/atimermann/nuxt-form/issues"
+  },
+  "homepage": "https://github.com/atimermann/nuxt-form#readme",
+  "devDependencies": {
+    "typescript": "^4.2.3",
+    "vue": "^2.6.12",
+    "vue-template-compiler": "^2.6.12"
+  }
+}
