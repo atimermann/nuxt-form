@@ -5,10 +5,10 @@
     <div v-for="(field, index) in schema" :key="index">
 
       <!--  Campos criados manualmente mas de  posição customizada (opcional, só implementar se for simples)   -->
-      <slot :name="field.name"></slot>
+      <slot :name="field.fieldName"></slot>
 
       <!--   Campos criados automaticamente  -->
-      <component :is="field.name"></component>
+      <component :is="field.fieldType"></component>
 
 
     </div>

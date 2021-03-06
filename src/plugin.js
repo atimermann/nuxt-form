@@ -7,7 +7,7 @@
  */
 'use strict'
 
-import Vue from 'vue'
-import NuxtForm from '@atimermann/nuxt-form'
 
-Vue.component('nuxtForm', NuxtForm)
+import PluginLoader from '@agtm/src/plugin-loader'
+
+PluginLoader()

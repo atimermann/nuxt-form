@@ -16,7 +16,7 @@ O Nuxt form é composto por dois compoenentes principais:
 As principais caractéristicas do Nuxt Form são:
 
 * Integração completa com Nuxt
-* Integração com vuetify (a princípio)
+* Integração com vuetify (a princípio) (se necessário adicionar outras bibliotecas no futuro)
 * i18n
 * Permitir criar formulários inteiros rapidamente através de uma descrição resumida em objetos ou json.
 * Ser flexivel permitindo criar qualquer tipo de formulário com qualquer tipo de campo, com minimo de restrições.  

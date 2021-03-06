@@ -1,5 +1,5 @@
 {
-  "name": "@atimermann/nuxt-form",
+  "name": "@agtm/nuxt-form",
   "private": false,
   "version": "0.0.4",
   "description": "Gerador de Formulário para o nuxt framework",
@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/atimermann/nuxt-form#readme",
   "devDependencies": {
+    "@nuxtjs/vuetify": "^1.11.3",
     "typescript": "^4.2.3",
     "vue": "^2.6.12",
     "vue-template-compiler": "^2.6.12"
