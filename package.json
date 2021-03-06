@@ -1,7 +1,7 @@
 {
   "name": "@agtm/nuxt-form",
   "private": false,
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Gerador de Formulário para o nuxt framework",
   "main": "src/nuxt-form.vue",
   "scripts": {
