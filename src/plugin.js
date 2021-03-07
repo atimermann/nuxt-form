@@ -9,4 +9,9 @@
 
 import Vue from 'vue'
 import PluginLoader from '@agtm/nuxt-form/src/plugin-loader'
-PluginLoader(Vue)
+
+const options = {
+  debugger: true
+}
+
+PluginLoader(Vue, options)

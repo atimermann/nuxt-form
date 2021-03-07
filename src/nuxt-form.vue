@@ -2,24 +2,17 @@
   <div>
     <div>--- BEGIN nuxt-form vars ---</div>
     fieldsName={{ fieldsName }} <br>
-    value={{ value }} <br>
-    model={{ model }}
+    value={{ value }} <br/>
+    model={{ model }} <br/>
+    preLoadedFields={{ preLoadedFields }}
     <div>--- END nuxt-form vars ---</div>
     <!--    Campos criados manualmente -->
     <slot></slot>
-    <div v-for="(field, index) in schema" :key="index">
-
+    <div v-for="(field, index) in validSchema" :key="index">
       <!--  Campos criados manualmente mas de  posição customizada (opcional, só implementar se for simples)   -->
-      <slot :name="field.fieldName"></slot>
-
+      <slot v-if="field.fromSlot" :name="field.fieldName"></slot>
       <!--   Campos criados automaticamente  -->
-      <!--  TODO: permitir customizar o gerador de campo automatico -->
-      <component
-          :is="field.fieldType"
-          :field-name="field.fieldName"
-      />
-
-
+      <component v-else :is="field.fieldType" :field-name="field.fieldName"/>
     </div>
   </div>
 </template>
@@ -58,7 +51,11 @@ export default {
        */
       model: {},
 
-      slotsInfo: [],
+      /**
+       * List de campos pré carregados nos slots, usado para o gerador automatico não recarregar o mesmo campo
+       * duas vezes
+       */
+      preLoadedFields: [],
       /**
        * Lista Indexada pelo nome de todos os campos do formulário
        * Dicionário de componentes
@@ -76,9 +73,11 @@ export default {
   },
 
   created() {
-    // console.log(this)
-    // Aqui carregamos informação dos slotes para não carregar no schema
-    // this.slotsInfo = this.$slots.default.length
+    if (this.$slots.default) {
+      for (const VNode of this.$slots.default) {
+        this._findVNodeFieldComponent(VNode)
+      }
+    }
 
   },
 
@@ -86,6 +85,20 @@ export default {
     this._mapChildrens()
     // Sincroniza form(model) e fields valores vindo da prop
     this.setValues(this.value)
+  },
+
+  computed: {
+    /**
+     * Ignora fields definidos no schema, porém adicionaros nos slots
+     */
+    validSchema() {
+      return this.schema
+          .filter(field => !this.preLoadedFields.includes(field.fieldName))
+          .map(field => {
+            field.fromSlot = Object.keys(this.$slots).includes(field.fieldName)
+            return field
+          })
+    }
   },
 
   watch: {
@@ -113,6 +126,25 @@ export default {
       this._syncFieldsWithFormModel()
     },
 
+    /**
+     * Procura por FieldComponentes carregado por slots, analisando Vnode
+     */
+    _findVNodeFieldComponent(VNode) {
+
+      if (VNode.data && VNode.data.attrs) {
+        const fieldName = VNode.data.attrs['field-name']
+        if (fieldName) {
+          this.preLoadedFields.push(fieldName)
+        }
+      }
+
+      if (VNode.children) {
+        for (const VNode of VNode.children) {
+          this._findVNodeFieldComponent(VNode)
+        }
+      }
+
+    },
 
     /**
      * Indexa todos os campos do formulário

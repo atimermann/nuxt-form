@@ -39,7 +39,12 @@ As principais caractéristicas do Nuxt Form são:
 
 ## Documentação
 
-* Manter sempre documentação autalizada com muitos exemplos e refêrencias.
+* Manter sempre documentação atializada com muitos exemplos e refêrencias.
+
+## Iniciando
+
+
+
 
 ## TODO: Acessando Métodos e atributos do formulários através de Ref
 

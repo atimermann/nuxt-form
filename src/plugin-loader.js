@@ -21,9 +21,9 @@ fields.keys().forEach((resolve, keys, id) => {
   modulesCache[moduleName] = require('./fields/' + moduleFileName).default
 })
 
-export default function (Vue) {
-  Vue.component('nuxtForm', NuxtForm)
+export default function (Vue, options) {
 
+  Vue.component('nuxtForm', NuxtForm)
 
   // Carrega automaticamente todos os fields e declara no vue
   for (let [moduleName, module] of Object.entries(modulesCache)) {
@@ -32,9 +32,11 @@ export default function (Vue) {
       data: function () {
         return {
           META_MODULENAME: moduleName,
-          META_FILENAME: `@agtm/nuxt-form/src/fields/${moduleName}.vue`
+          META_FILENAME: `@agtm/nuxt-form/src/fields/${moduleName}.vue`,
+          options
         }
-      }
+      },
+
     }
 
     if (module.mixins) {

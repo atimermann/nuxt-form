@@ -3,13 +3,24 @@
     <v-btn @click="change">Change</v-btn>
 
     <div>--- BEGIN form teste Data ---</div>
-    formData={{ formData }}
+    formData={{ formData }}<br/>
+    standAlone={{ standalone }}
     <div>--- END form teste Data ---</div>
 
+    <h2>Teste Stand Alone</h2>
+    <nv-text-field
+        v-model="standalone"
+    />
+    <h2>Teste FORM</h2>
     <nuxt-form :schema="schema" v-model="formData">
+      <template #Name3>
+        <nv-text-field
+            field-name="Name3"
+        />
+      </template>
 
       <nv-text-field
-          field-name="externo"
+          field-name="Name2"
       />
 
       <p>
@@ -24,6 +35,10 @@
 
 
     </nuxt-form>
+
+
+
+
   </div>
 </template>
 
@@ -39,25 +54,26 @@ export default {
     console.log('DATA')
 
     return {
+      standalone: 'stand_alone',
       formData: {
         personal: {
           name: 'André'
         },
-        externo: [1,2,3,4]
+        externo: [1, 2, 3, 4]
       },
       schema: [
         {
           fieldName: 'personal.name',
           fieldType: 'nv-text-field'
         },
-        // {
-        //   fieldName: 'Name2',
-        //   fieldType: 'nv-text-field'
-        // },
-        // {
-        //   fieldName: 'Name3',
-        //   fieldType: 'nv-text-field'
-        // },
+        {
+          fieldName: 'Name2',
+          fieldType: 'nv-text-field'
+        },
+        {
+          fieldName: 'Name3',
+          fieldType: 'nv-text-field'
+        },
         // {
         //   fieldName: 'Name4',
         //   fieldType: 'nv-text-field'

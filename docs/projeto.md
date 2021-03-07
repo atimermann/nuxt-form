@@ -11,28 +11,31 @@ Documentar bem todo o funcionamento, fluxo e forma de uso com muitos exemplos, c
     * manual (montagem dos campos manualmente via slot template)
     * misto (schema + manual, permite começar com schema e ir customizando caso necessário)
 
-* Documentar metodo de busca de componentes aprendido no form atual (consegue varrer o template atrás de componentes compativel e altera-los, complexo, mas interessante)
-    * mapClildren
+*[OK] Documentar metodo de busca de componentes aprendido no form atual (consegue varrer o template atrás de componentes compativel e altera-los, complexo, mas interessante)
+    *[OK] mapClildren
     * Será o modo 1, onde o usuário cria os campos e o form varre atrás dele (MODO CUSTOMIZAD) - Form customizado, qualquer layout desejado (DEMORA MAIS PRA CRIAR)
     * No modo 2, o form cria os childrens via slots baseado, no schema/ model (MODO AUTOMATICO) - Form simples, linear  (CRIAÇÃO RÁPIDA)
 * Contexto deve carregar automaticamente através de um plugin
-* Vai ser um módulo do nuxt
+*[OK] Vai ser um módulo do nuxt
 * Integração com nuxt-model (vc passa o vmodel e monta o form, nuxt-modelo se comporta como um objeto) - deve funcionar com objeto simples também
 
-* Não existirá mais objeto formHandler
+*[OK] Não existirá mais objeto formHandler
 * validações:
     * Cada campo poderá implementar suas validações validação interno do campo
     * Validação padrão
     * Validação customizado externamente pelo usuario
     * Copiar do vuelidade o conceito de sujo limpo, etc...
-* Revisar Object Tree (ver lodash)
-* Formulário não trata requisição(Removido função HandleRequest, erros de backend devem ser adicionado manualmente (similar ao setValue))
+*[OK] Revisar Object Tree (ver lodash)
+*[OK] Formulário não trata requisição(Removido função HandleRequest, erros de backend devem ser adicionado manualmente (similar ao setValue))
 * Erros:
     * Erros podem ser setado automaticamente pelo validador interno
     * Passados externamente (podendo ser vindo do backend, deve setar externamente)
 
-* Remover MapperObject
+*[OK] Remover MapperObject
 * Filtros
+* Options
+* Logger, que pode ser desativado no modo produção
+* Modu debug (configurado via modulo)
 
 Outros Requisitos
 -----------------
@@ -51,17 +54,13 @@ Outros Requisitos
 * Criar nova funcionalidade de impressão de erro abaixo dos campos que permita Multilinhas / Label
 * Definir erros globais
 * Configurar arquivos GQL separadamente
-* Separar forms das "Pages" e por em um componente em "Apps"
-* Tratar todos os Any
-* Configurar todas as validações do vuelidate com tradução
-* Mudar estrutura para centalizar GQLs (mutation e query) separado da app para poder ser aproveitada por outros apps
+* Tradução de erro
 * Fluxo de bloqueio do form quando aguardando,
 * Loading
-* Envio do token automaticamente na requisição
 * Suporte blur, ao perder foco validar novamentem ou quando digitar, deixar opcional
 * Campos complexos podem implementar validações complexas internamente
 * Validação pode ser definida dinamicamente
-* criar função focuso, para forcar de fora do formulário, passando nome
+* criar função focus, para forcar de fora do formulário, passando nome
 * mask
 * Limpar campo / Limpar formulário
 

@@ -1,6 +1,5 @@
 <template>
   <div class="pb-3">
-    fModel={{ fModel }}
     <v-text-field
         v-model="fModel"
     />

@@ -7,11 +7,11 @@
  */
 'use strict'
 
+import Debugger from './mixin/debugger'
+
 export default {
 
-  mounted() {
-    this.insertDebugInfo()
-  },
+  mixins: [Debugger],
 
   data() {
     return {
@@ -53,38 +53,6 @@ export default {
       this.fModel = value
     },
 
-    /**
-     * Insere informações de depuração no componente
-     */
-    insertDebugInfo() {
-
-
-      function getRandom() {
-        const min = 200, max = 255
-        return Math.floor(Math.random() * (max - min)) + min
-      }
-
-      this.$el.style.setProperty('border', 'solid 2px red')
-      this.$el.style.setProperty('position', 'relative')
-      this.$el.style.setProperty('background-color', `rgb(${getRandom()},${getRandom()},${getRandom()})`)
-      const node = document.createElement("div")
-      const textnode = document.createTextNode(`${this.META_FILENAME} (${this.$attrs['field-name']})`)
-      node.style.setProperty('border', 'solid 1px')
-      node.style.setProperty('background-color', '#cbcaca')
-      node.style.setProperty('position', 'absolute')
-      node.style.setProperty('display', 'inline-block')
-      node.style.setProperty('left', '100%')
-      node.style.setProperty('top', '0px')
-      node.style.setProperty('transform', 'translate(-100%)')
-      node.style.setProperty('white-space', 'nowrap')
-      node.style.setProperty('opacity', '0.6')
-
-      node.appendChild(textnode)
-
-      this.$el.appendChild(node)
-
-
-    }
 
   }
 
