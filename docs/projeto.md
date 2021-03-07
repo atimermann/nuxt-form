@@ -6,15 +6,15 @@ Núcleo
 Documentar bem todo o funcionamento, fluxo e forma de uso com muitos exemplos, como criar um field
 
 * Três modos:
-    * Stand-alone (apenas o campo)
-    * Schema (gera campos automaticamente baseado no objeto ou model)
-    * manual (montagem dos campos manualmente via slot template)
-    * misto (schema + manual, permite começar com schema e ir customizando caso necessário)
+    *[OK] Stand-alone (apenas o campo)
+    *[OK] Schema (gera campos automaticamente baseado no objeto ou model)
+    *[OK] manual (montagem dos campos manualmente via slot template)
+    *[OK] misto (schema + manual, permite começar com schema e ir customizando caso necessário)
 
 *[OK] Documentar metodo de busca de componentes aprendido no form atual (consegue varrer o template atrás de componentes compativel e altera-los, complexo, mas interessante)
     *[OK] mapClildren
-    * Será o modo 1, onde o usuário cria os campos e o form varre atrás dele (MODO CUSTOMIZAD) - Form customizado, qualquer layout desejado (DEMORA MAIS PRA CRIAR)
-    * No modo 2, o form cria os childrens via slots baseado, no schema/ model (MODO AUTOMATICO) - Form simples, linear  (CRIAÇÃO RÁPIDA)
+    *[OK] Será o modo 1, onde o usuário cria os campos e o form varre atrás dele (MODO CUSTOMIZAD) - Form customizado, qualquer layout desejado (DEMORA MAIS PRA CRIAR)
+    *[OK] No modo 2, o form cria os childrens via slots baseado, no schema/ model (MODO AUTOMATICO) - Form simples, linear  (CRIAÇÃO RÁPIDA)
 * Contexto deve carregar automaticamente através de um plugin
 *[OK] Vai ser um módulo do nuxt
 * Integração com nuxt-model (vc passa o vmodel e monta o form, nuxt-modelo se comporta como um objeto) - deve funcionar com objeto simples também
@@ -36,6 +36,8 @@ Documentar bem todo o funcionamento, fluxo e forma de uso com muitos exemplos, c
 * Options
 * Logger, que pode ser desativado no modo produção
 * Modu debug (configurado via modulo)
+* Criar slots para customizar layout do formulário (no modo schema)
+* Criar slots pra customizar outras areas do formulário como actions (botões de ação)
 
 Outros Requisitos
 -----------------
@@ -83,3 +85,6 @@ Discussão:
 
 * Opção de montar o form automaticamente passando um schema ou um objeto nuxt-model (configurado) ou montar os campos automaticamente
 
+== Anotações
+
+*
