@@ -12,12 +12,7 @@
 import path from 'path'
 
 export default function NuxtModelModule(optionsModule) {
-  this.addPlugin(
-    {
-      src: path.resolve(__dirname, '..', 'src', 'plugin.js')
-    }
-  )
-
+  this.addPlugin({src: path.resolve(__dirname, '..', 'src', 'plugin.js')})
 }
 
 // OBRIGATÓRIO se publicar o módulo como pacote npm

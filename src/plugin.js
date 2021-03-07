@@ -7,7 +7,6 @@
  */
 'use strict'
 
-
-import PluginLoader from '@agtm/src/plugin-loader'
-
-PluginLoader()
+import Vue from 'vue'
+import PluginLoader from '@agtm/nuxt-form/src/plugin-loader'
+PluginLoader(Vue)

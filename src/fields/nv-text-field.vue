@@ -1,10 +1,23 @@
 <template>
   <div class="pb-3">
-    <v-text-field/>
+    fModel={{ fModel }}
+    <v-text-field
+        v-model="fModel"
+    />
   </div>
 </template>
 
-<script lang="ts">
+
+<script>
+
+import BaseField from '../base-field'
+
+export default {
+  name: 'nv-text-field',
+  extends: BaseField
+}
 </script>
 
+<style scoped>
 
+</style>
