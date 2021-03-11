@@ -23,6 +23,8 @@ fields.keys().forEach((resolve, keys, id) => {
 
 export default function (Vue, options) {
 
+  NuxtForm.mixins.push({options})
+
   Vue.component('nuxtForm', NuxtForm)
 
   // Carrega automaticamente todos os fields e declara no vue
@@ -36,7 +38,6 @@ export default function (Vue, options) {
           options
         }
       },
-
     }
 
     if (module.mixins) {

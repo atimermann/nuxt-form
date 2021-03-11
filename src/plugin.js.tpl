@@ -11,7 +11,9 @@ import Vue from 'vue'
 import PluginLoader from '@agtm/nuxt-form/src/plugin-loader'
 
 const options = {
-  debugger: true
+  debugger: <%= options.debugger %>,
+  nuxtI18n: <%= options.nuxtI18n %>,
+  language: '<%= options.language %>'
 }
 
 PluginLoader(Vue, options)

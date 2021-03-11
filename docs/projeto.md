@@ -21,10 +21,44 @@ Documentar bem todo o funcionamento, fluxo e forma de uso com muitos exemplos, c
 
 *[OK] Não existirá mais objeto formHandler
 * validações:
+    * Assincrona
     * Cada campo poderá implementar suas validações validação interno do campo
     * Validação padrão
     * Validação customizado externamente pelo usuario
     * Copiar do vuelidade o conceito de sujo limpo, etc...
+    * validação deve funcionar no modo standalone
+    * Tradução de mensagem de validação
+    * Migrar validação biblioteca: https://github.com/validatorjs/validator.js - Connect to preview
+    * ---------------------------------------------------------------------------------
+    * Validações podem ser implementadas pelo próprio campo (VAlidações complexas especificas)  
+    * Validação padrão built-in incluída no field
+    * Validação customizada via funcion por field
+    * validação executada pelo form (valida mais de um campo ex: confirmação de senha) build in?
+        * Velidação global customizada
+    * Tradução de mensagem de erro
+    * Suporte blur, ao perder foco validar novamentem ou quando digitar, deixar opcional
+
+* $dirty
+* $error
+* $pending
+* $invalid
+
+
+
+
+* Sistema de Erros:
+    * Por campo e por form
+   
+
+    * modos de validação impressão de erro
+        * Apenas ao submeter, porém limpa validação assim que o campo é alterado
+    
+    * Form pede pro campo se validar
+    * Validação separada da mensagem de erro, Validação ao vivo
+    * Valida em todo change, field tem um status $valid
+    * Dois sistemas, impressão de erro e validação
+
+        
 *[OK] Revisar Object Tree (ver lodash)
 *[OK] Formulário não trata requisição(Removido função HandleRequest, erros de backend devem ser adicionado manualmente (similar ao setValue))
 * Erros:
@@ -44,22 +78,20 @@ Outros Requisitos
 
 * Função habilitar/ desabilitar
 * NO model vamos ter <fieldName>Attrs
-* Separar FormHandler em um módulo próprio -> NPM
-* Separar Model em um módulo próprio -> NPM
+* [OK] Separar FormHandler em um módulo próprio -> NPM
+* [OK] Separar Model em um módulo próprio -> NPM
 * Implementar validação, remover biblioteca atual, utilizar:
-* Migrar validação biblioteca: https://github.com/validatorjs/validator.js - Connect to preview
 * Revisar impressão de erros
 
 * Corrigir hide-details, mb-3
 
 * Dar foco ao primeiro campo com erro após validação
 * Criar nova funcionalidade de impressão de erro abaixo dos campos que permita Multilinhas / Label
-* Definir erros globais
 * Configurar arquivos GQL separadamente
 * Tradução de erro
 * Fluxo de bloqueio do form quando aguardando,
 * Loading
-* Suporte blur, ao perder foco validar novamentem ou quando digitar, deixar opcional
+
 * Campos complexos podem implementar validações complexas internamente
 * Validação pode ser definida dinamicamente
 * criar função focus, para forcar de fora do formulário, passando nome

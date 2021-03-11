@@ -12,14 +12,22 @@
       <!--  Campos criados manualmente mas de  posição customizada (opcional, só implementar se for simples)   -->
       <slot v-if="field.fromSlot" :name="field.fieldName"></slot>
       <!--   Campos criados automaticamente  -->
-      <component v-else :is="field.fieldType" :field-name="field.fieldName"/>
+      <component
+          v-else
+          :is="field.fieldType"
+          :field-name="field.fieldName"
+          :validators="field.validators"
+      />
     </div>
+    <v-alert v-for="(globalError, globalErrorIndex) in globalErrors" :key="'g' + globalErrorIndex" type="error">
+      {{ globalError }}
+    </v-alert>
   </div>
 </template>
 
 <script>
 
-import {cloneDeep, get, isEqual} from 'lodash'
+import { get , cloneDeep, isEqual} from 'lodash'
 
 export default {
   name: "nuxt-form",
@@ -68,9 +76,17 @@ export default {
        *
        * @type {string[]}
        */
-      fieldsName: []
+      fieldsName: [],
+
+      /**
+       * Lista de erros globais
+       */
+      globalErrors: []
     }
   },
+
+  // Não remover linha abaixo
+  mixins: [],
 
   created() {
     if (this.$slots.default) {
@@ -82,7 +98,7 @@ export default {
   },
 
   mounted() {
-    this._mapChildrens()
+    this._mapChildrens(this)
     // Sincroniza form(model) e fields valores vindo da prop
     this.setValues(this.value)
   },
@@ -119,11 +135,61 @@ export default {
      * @param values
      */
     setValues(values) {
-
       for (const [attribute, value] of Object.entries(values)) {
         this._setObjectAttribute(this.model, attribute, value)
       }
       this._syncFieldsWithFormModel()
+    },
+
+
+    /**
+     * Realiza Submit do Formulário
+     */
+    submit() {
+      this.$emit('submit', this.isValid(), this.model, this.fieldsComponentIndex)
+    },
+
+    /**
+     *  Verifica se formulário é válido (todos os campos estão validados)
+     */
+    isValid() {
+
+      let valid = true
+      for (const fieldName of this.fieldsName) {
+        if (this.fieldsComponentIndex[fieldName].validation.invalid) {
+          valid = false
+          break
+        }
+      }
+      return valid
+
+    },
+
+    /**
+     * Limpa todos os Erros globais e erros de campos customizados
+     * Não limpa erros de validações internas
+     *
+     */
+    clearErrors() {
+      for (const fieldName of this.fieldsName) {
+        this.fieldsComponentIndex[fieldName].setErrors([])
+      }
+      this.globalErrors = []
+    },
+
+    /**
+     * Define erros globais (Limpa antigos)
+     *
+     */
+    setErrors(errors) {
+      this.globalErrors = errors
+    },
+
+    /**
+     * Adiciona um erro Global
+     */
+    addErrors(error) {
+      this.globalErrors.push(error)
     },
 
     /**
@@ -153,11 +219,12 @@ export default {
      *
      * @private
      */
-    _mapChildrens() {
-      for (const fieldComponent of this.$children) {
+    _mapChildrens(component) {
+
+      for (const fieldComponent of component.$children) {
 
 
-        if (fieldComponent.isNuxtFormFieldInstance()) {
+        if (fieldComponent.isNuxtFormFieldInstance) {
 
           const fieldName = fieldComponent.$attrs['field-name']
 
@@ -168,6 +235,8 @@ export default {
 
           this.fieldsComponentIndex[fieldName] = fieldComponent
           this.fieldsName.push(fieldName)
+
+          fieldComponent.setForm(this)
 
           // if (fieldType) this.fieldsType[fieldName] = fieldType
           // if (fieldType) this.fieldsType[fieldName] = fieldType
@@ -183,8 +252,7 @@ export default {
           // // Próprio Nome
           // this.fieldsComponentIndex[fieldName].fieldType = fieldType
           //
-          // // Criação do evento que será disparado quando um campo atualizar o valor, atualizando vModel (listen escuta)
-          // // eslint-disable-next-line
+          // Criação do evento que será disparado quando um campo atualizar o valor, atualizando model (listen escuta)
           fieldComponent.$on('input', (value) => {
 
             // Converte undefined pra null TODO: Monitorar se é melhor definir ou ignorar
@@ -194,10 +262,8 @@ export default {
             this._setObject(this.model, fieldName.split('.'), value)
 
             if (!isEqual(pre, this.model)) {
-              console.log('EMIT_MODEL', this.model)
               this.$emit('input', this.model)
             }
-
 
           })
           //
@@ -289,7 +355,6 @@ export default {
             : object[attrName] = value
 
       }
-
 
     },
 

@@ -14,31 +14,26 @@ export default {
 
   mounted() {
 
-    setTimeout(() => {
-
-      // if (debug === null){
-      //   debug = this.options.debugger
-      // }
-      //
-      // if (debug) {
+    if (this.options?.debugger) {
       this.insertDebugInfo()
-      // }
-
-    }, 1000)
-
+    }
 
   },
 
   data() {
     return {
-      fModelElement: document.createElement("div")
+      fModelElement: document.createElement("div"),
+      // invalidlement: document.createElement("div")
     }
   },
 
   watch: {
     fModel(value) {
       this.fModelElement.innerText = `fModel: ${value}`
-    }
+    },
+    // $invalid(value) {
+    //   this.invalidElement.innerText = `Invalid: ${value}`
+    // },
   },
 
   methods: {
@@ -76,7 +71,9 @@ export default {
       node3.appendChild(document.createTextNode(`field-name: ${this.$attrs['field-name']}`))
       node.appendChild(node3)
 
+      // --- Watches ---
       node.appendChild(this.fModelElement)
+      // node.appendChild(this.invalidlement)
 
       this.$el.appendChild(node)
 

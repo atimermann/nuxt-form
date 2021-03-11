@@ -233,9 +233,10 @@ export default {
 ## Modo Misto
 
 Podemos criar no mesmo formulário, campos via schema ou via slots, desta forma podemos criar formulários rapidamente com
-esquema e no decorrer, graduamente ir melhorando os campos e substituíndo por campos via slot.
+esquema e no decorrer do projeto, graduamente, ir melhorando a implementação e substituíndo por campos definidos via 
+slot.
 
-Pore exemplo:
+Por exemplo:
 
 ```vue
 
@@ -275,20 +276,19 @@ export default {
 
 * Observe o campo "name2" ele é definido tanto no schema quanto no slot, neste caso a versão do slot tem precedencia, e
   o campo definido no schema é ignorado.
-* Note q os campos do slot são renderizado acima do schema, ou seja se vc criar um novo campo via slot a ordem será
-  modificada.
 
 ## Slots Nomeados
 
+Campos definidos via slot são renderizado acima dos campos definidos via schema, ou seja,  se você criar um novo campo 
+via slot a ordem de renderização será modificada.
+
 * Para não alterar a ordem definida via schema, podemos utilizar slots nomeados, que são renderizados na mesma posição
   definda em schema.
-* Porém slots nomeados só funcionam se estiverem definidos em schemas, apenas o atributo fieldName no schema será
-  aproveito, o restante serão excluidos.
+* Porém, slots nomeados só funcionam se estiverem definidos em schemas, apenas o atributo fieldName no schema será
+  aproveito, o restante será excluido.
 
 Exemplo:
-
 ```vue
-
 <template>
   <nuxt-form :schema="schema" v-model="formData">
     <template #Name3>
@@ -400,7 +400,19 @@ export default {
 ## TODO: Criando um campo Customizado
 
 * Todos os campos devem estender BaseField
+* Tomar cuidado para não sobrescrever uma prop do BaseField, como  errors
+* Adicionar componente <error-message :errors="fErrors"/> para imprimir mensaens de erro padrão
+
+## TODO: i18n
 
 # Rêferencias
 
-* https://pt.nuxtjs.org/docs/2.x/get-started/installation
+## Opções do Módulo
+
+| Atributo | Descrição                                                                                                                                                                                                                                                                 | Padrão  |
+|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| debugger | Modo depuração, exibe borda vermelha nos componentes internos e exibe informações sobre componentes.                                                                                                                                                                      | true    |
+| nuxtI18n | Habilita suporte ao plugin do nuxt: nuxt-i18n deve estar instalado no projeto, veja documentação em: https://pt.nuxtjs.org/docs/2.x/get-started/installation Necessário carregar arquivos de tradução do formulário em seu projeto localizado em @agtm/nuxt-form/src/lang | false   |
+| language | Idioma utilizado caso não queira utilizar o modulo "nuxt-i18n". Caso precise da funcionalidade de idioma dinâmico necessário utilizar o "nuxt-i18n". Por enquanto apensar idioma pt-BR está disponível                                                                    | 'pt-BR' |
+
+Table Editor: https://www.tablesgenerator.com/markdown_tables
