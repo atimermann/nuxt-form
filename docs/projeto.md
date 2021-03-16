@@ -15,39 +15,39 @@ Documentar bem todo o funcionamento, fluxo e forma de uso com muitos exemplos, c
     *[OK] mapClildren
     *[OK] Será o modo 1, onde o usuário cria os campos e o form varre atrás dele (MODO CUSTOMIZAD) - Form customizado, qualquer layout desejado (DEMORA MAIS PRA CRIAR)
     *[OK] No modo 2, o form cria os childrens via slots baseado, no schema/ model (MODO AUTOMATICO) - Form simples, linear  (CRIAÇÃO RÁPIDA)
-* Contexto deve carregar automaticamente através de um plugin
+* Contexto deve carregar automaticamente através de um plugin, pode ser acesso diretamente pois o nuxt-form é um componente
 *[OK] Vai ser um módulo do nuxt
 * Integração com nuxt-model (vc passa o vmodel e monta o form, nuxt-modelo se comporta como um objeto) - deve funcionar com objeto simples também
 
 *[OK] Não existirá mais objeto formHandler
 * validações:
-    * Assincrona
-    * Cada campo poderá implementar suas validações validação interno do campo
-    * Validação padrão
-    * Validação customizado externamente pelo usuario
-    * Copiar do vuelidade o conceito de sujo limpo, etc...
-    * validação deve funcionar no modo standalone
-    * Tradução de mensagem de validação
-    * Migrar validação biblioteca: https://github.com/validatorjs/validator.js - Connect to preview
+    * [OK] Assincrona
+    * [OK] Cada campo poderá implementar suas validações validação interno do campo
+    * [OK] Validação padrão
+    * [OK] Validação customizado externamente pelo usuario
+    * [OK] Copiar do vuelidade o conceito de sujo limpo, etc...
+    * [OK] validação deve funcionar no modo standalone
+    * [OK] Tradução de mensagem de validação
+    * [OK] Migrar validação biblioteca: https://github.com/validatorjs/validator.js - Connect to preview
     * ---------------------------------------------------------------------------------
-    * Validações podem ser implementadas pelo próprio campo (VAlidações complexas especificas)  
-    * Validação padrão built-in incluída no field
-    * Validação customizada via funcion por field
-    * validação executada pelo form (valida mais de um campo ex: confirmação de senha) build in?
-        * Velidação global customizada
-    * Tradução de mensagem de erro
-    * Suporte blur, ao perder foco validar novamentem ou quando digitar, deixar opcional
+    * [OK] Validações podem ser implementadas pelo próprio campo (VAlidações complexas especificas)  
+    * [OK] Validação padrão built-in incluída no field
+    * [OK] Validação customizada via funcion por field
+    * [OK]validação executada pelo form (valida mais de um campo ex: confirmação de senha) build in?
+        * [OK] Velidação global customizada
+    * [OK]Tradução de mensagem de erro
+    * [OK] Suporte blur, ao perder foco validar novamentem ou quando digitar, deixar opcional
 
-* $dirty
-* $error
-* $pending
-* $invalid
-
-
+* [OK] $dirty
+* [OK] $error
+* [XX] $pending
+* [OK] $invalid
 
 
-* Sistema de Erros:
-    * Por campo e por form
+* Criar slots para customização do form
+
+* [OK] Sistema de Erros:
+    * [OK] Por campo e por form
    
 
     * modos de validação impressão de erro
@@ -62,8 +62,8 @@ Documentar bem todo o funcionamento, fluxo e forma de uso com muitos exemplos, c
 *[OK] Revisar Object Tree (ver lodash)
 *[OK] Formulário não trata requisição(Removido função HandleRequest, erros de backend devem ser adicionado manualmente (similar ao setValue))
 * Erros:
-    * Erros podem ser setado automaticamente pelo validador interno
-    * Passados externamente (podendo ser vindo do backend, deve setar externamente)
+    * [OK] Erros podem ser setado automaticamente pelo validador interno
+    * [OK] Passados externamente (podendo ser vindo do backend, deve setar externamente)
 
 *[OK] Remover MapperObject
 * Filtros
@@ -80,20 +80,20 @@ Outros Requisitos
 * NO model vamos ter <fieldName>Attrs
 * [OK] Separar FormHandler em um módulo próprio -> NPM
 * [OK] Separar Model em um módulo próprio -> NPM
-* Implementar validação, remover biblioteca atual, utilizar:
-* Revisar impressão de erros
+* [OK] Implementar validação, remover biblioteca atual, utilizar:
+* [OK] Revisar impressão de erros
 
-* Corrigir hide-details, mb-3
+* [OK] Corrigir hide-details, mb-3
 
 * Dar foco ao primeiro campo com erro após validação
-* Criar nova funcionalidade de impressão de erro abaixo dos campos que permita Multilinhas / Label
-* Configurar arquivos GQL separadamente
-* Tradução de erro
+* [OK] Criar nova funcionalidade de impressão de erro abaixo dos campos que permita Multilinhas / Label
+* [OK] Configurar arquivos GQL separadamente
+* [OK] Tradução de erro
 * Fluxo de bloqueio do form quando aguardando,
 * Loading
 
-* Campos complexos podem implementar validações complexas internamente
-* Validação pode ser definida dinamicamente
+* [OK] Campos complexos podem implementar validações complexas internamente
+* [OK] Validação pode ser definida dinamicamente
 * criar função focus, para forcar de fora do formulário, passando nome
 * mask
 * Limpar campo / Limpar formulário
@@ -101,22 +101,18 @@ Outros Requisitos
 Discussão:
 
 * Suporte a Vuejs ou apenas Nuxt
-* Criar plugins
+* [OK] Criar plugins
 
-* Criar um modulo que englobe form e model????
-    * dataHandler
-    * dataManager
+* [XX] Criar um modulo que englobe form e model????
+    * [XX] dataHandler
+    * [XX] dataManager
 
 * Typescript (apenas comentários)
 * nunca vai ser possivel mapear objeto ⇔ form diretamente, criar um mapper (Atual tá complicado), mas deixar separado
 
 
 
-* Criar uma diretiva (em vez de v-form, ter o próprio)
+* [XK] Criar uma diretiva (em vez de v-form, ter o próprio)
 * Permitir que o vModel sejá o próprio Model (por referencia), se o formulário não manipular um atributo, apenas ignora, mas guardar o valor ( Deu conflito com validador, alterar este comportamento quando a validação for refeita)
 
-* Opção de montar o form automaticamente passando um schema ou um objeto nuxt-model (configurado) ou montar os campos automaticamente
-
-== Anotações
-
-*
+* [OK] Opção de montar o form automaticamente passando um schema ou um objeto nuxt-model (configurado) ou montar os campos automaticamente

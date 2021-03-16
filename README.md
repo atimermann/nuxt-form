@@ -95,6 +95,8 @@ isto basta alterar "formData" que o formulário será atualizado imediatamente.
 **Importante:** Todos os dados do formulários existentes serão perdidos. Para alterar alguns campos, utilize o método
 setModel via ref
 
+## TODO: Opções do Modulo
+
 ## Modo Stand Alone
 
 É possivel utilizar os campos isoladamente, independente do formulário e aproveitando algumas de suas funcionalidades
@@ -233,7 +235,7 @@ export default {
 ## Modo Misto
 
 Podemos criar no mesmo formulário, campos via schema ou via slots, desta forma podemos criar formulários rapidamente com
-esquema e no decorrer do projeto, graduamente, ir melhorando a implementação e substituíndo por campos definidos via 
+esquema e no decorrer do projeto, graduamente, ir melhorando a implementação e substituíndo por campos definidos via
 slot.
 
 Por exemplo:
@@ -279,7 +281,7 @@ export default {
 
 ## Slots Nomeados
 
-Campos definidos via slot são renderizado acima dos campos definidos via schema, ou seja,  se você criar um novo campo 
+Campos definidos via slot são renderizado acima dos campos definidos via schema, ou seja, se você criar um novo campo
 via slot a ordem de renderização será modificada.
 
 * Para não alterar a ordem definida via schema, podemos utilizar slots nomeados, que são renderizados na mesma posição
@@ -288,7 +290,9 @@ via slot a ordem de renderização será modificada.
   aproveito, o restante será excluido.
 
 Exemplo:
+
 ```vue
+
 <template>
   <nuxt-form :schema="schema" v-model="formData">
     <template #Name3>
@@ -374,24 +378,291 @@ export default {
         {
           fieldName: 'personal.lastname',
           fieldType: 'nv-text-field'
-        }        
+        }
       ]
     }
   }
 }
 </script>
 ```
+
 * Desta forma apenas o atributo filho será alterado diretamente.
 * Se personal não estiver definido no modelo, então será criado automaticamente.
 
+## Acessando Métodos e atributos do formulários através de Ref
 
+Para acessarmos os métodos do nuxt-form utilizamos "ref" como no exemplo abaixo:
 
+```vue
 
-## TODO: Acessando Métodos e atributos do formulários através de Ref
+<template>
+  <div>
+    <v-card>
+      <v-container>
+        <nuxt-form :schema="schema" v-model="formData" ref="form" @submit="submit">
+        </nuxt-form>
+        <v-btn @click="$refs.form.submit()">SUBMIT</v-btn>
+      </v-container>
+    </v-card>
+  </div>
+</template>
 
-## TODO: Validação
+<script>
+export default {
 
-## TODO: Opções do Modulo
+  mounted() {
+    setTimeout(() => {
+      this.$refs.form.setValues({name: 'André'})
+    }, 3500)
+  },
+  data() {
+    return {
+      formData: {},
+      schema: [
+        {
+          fieldName: 'lastname',
+          fieldType: 'nv-text-field',
+        }
+      ]
+    }
+  },
+  methods: {
+    submit(valid, values, fields) {
+      this.$refs.form.clearErrors()
+      this.$refs.form.setErrors(['Erro Global'])
+    }
+  }
+}
+</script>
+```
+
+## Validação
+
+Validações são implementadas internamente no nuxt-form (utilizando o modulo validator) e também podem ser fácilmente
+customizadas.
+
+Portando, podemos validar os campos de várias maneiras:
+
+### Validação Interna
+
+São validações comuns implementadas internamente no nuxt-form, para definir uma validação interna simplemente defina o
+atributo "validators":
+
+**Exemplos:**
+
+```vue
+
+<template>
+  <nv-text-field
+      field-name="name"
+      validators="required"
+  />
+</template>
+```
+
+Caso queira mais de uma validação no mesmo campo:
+
+```vue
+
+<template>
+  <nv-text-field
+      field-name="name"
+      :validators="['required', 'mustBeEmpty']"
+  />
+</template>
+```
+
+Se quisermos passar atributos para essa validação:
+
+```vue
+
+<template>
+  <nv-text-field
+      field-name="name"
+      :validators="{validator: 'equal', options: {field: 'password', otherLabel: 'Confirme a Senha'}}"
+  />
+</template>
+```
+
+E por fim, podemos passar funções, veja mais detalhes em "validações Customizadas"
+
+Caso esteja utilizando um schema, pode configurar validações da seguinte forma:
+
+```javascript
+
+export default {
+  data() {
+    return {
+      schema: [
+        {
+          fieldName: 'lastname',
+          fieldType: 'nv-text-field',
+          validators: ['required', this.validation]
+        }
+      ]
+    }
+  }
+}
+```
+
+### Validação Customizada
+
+Para criar uma validação customizada, basta passar uma função no atributo "validators" do campo da seguinte forma:
+
+```javascript
+
+export default {
+  data() {
+    return {
+      schema: [
+        {
+          fieldName: 'lastname',
+          fieldType: 'nv-text-field',
+          validators: this.myValidation
+        }
+      ]
+    }
+  },
+
+  methods: {
+    myValidation(value, model) {
+      return {valid: true}
+    }
+  }
+}
+```
+
+A função criada terá os seguintes argumentos:
+
+| Argumento | Descrição                                                                                                                                                                   | Tipo   |
+|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|
+| value     | Valor do campo no qual queremos validar                                                                                                                                     | Any    |
+| model     | Uma cópia do model do form, ou seja podemos acessar valores de qualquer outro campo. Exemplo: verificar se a senha preenchida pelo usuário em outro campo é idêntico a este | Object |
+
+O mais importante é agora é o retorno, deve serum objeto representando o resultado da validação e deve estar
+necessáriamente no seguinte formato:
+
+**IMPORTANTE:** Validações podem ser assincronas (adicionar async na função customizada).
+** NOTA: ** Se utilizar a biblioteca validator, é necessário converter para string o valor recebido antes de validar
+
+#### Campo validado com sucesso:
+
+```javascript
+return {valid: true}
+```
+
+#### Campo não válidado:
+
+```javascript
+return {valid: false, error: 'VALIDATOR_REQUIRED'}
+```
+
+Note que além do status da validação, precisamos retornar uma mensagem de erro para ser exibida no formulário exatamente
+abaixo do campo inválido.
+
+Porém, o que deve ser retornado em "error" é uma plavra-chave que represente a chave no arquivo de tradução. Veja mais
+detalhes em nuxt-i18n e vue-i18n, exceto se o modo internacionalização esteja desativado, neste caso é possível retornar
+a mensagem de erro diretamente
+
+No exemplo acima 'VALIDATOR_REQUIRED' será traduzido para "campo obrigatório", caso o idioma esteja definido para pt-BR.
+
+#### Mensagem de erro com váriaveis na tradução
+
+Seguindo o nuxt-i18n, você pode utiizare váriaveis na tradução como no exemplo abaixo:
+
+```javascript
+return {valid: false, error: 'VALIDATOR_EQUAL', errorValues: {same: model.otherLabel}}
+```
+
+#### Requisitar validação de outro campo
+
+Em alguns casos, pode ser interessante sempre que este campo for validado, validar outros campo, como por exemplo na
+criação de nova senha, onde existe um segundo campo relacionado para confirmar senha. Para isso utilize o atributo "
+validate":
+
+```javascript
+equal(value, model)
+{
+  const valueA = value || ''
+  const valueB = model['confirmPassowrd'] || ''
+
+  return valueA === valueB
+    ? {valid: true, validate: 'confirmPassword'}
+    : {valid: false, error: 'Campo inválido', validate: 'confirmPassword'}
+}
+```
+
+### Validação de Campo
+
+Existem alguns tipos de campos, que requerem validações especiais que só servem pra este campo em específico. Neste
+caso a validação é implementada diretamente na implementação do campo customizado.
+
+Segue as mesmas regras de validação customizada.
+
+Leia mais na sessão: "Criando campos Customizados"
+
+### Validação Global
+
+Em alguns casos, queremos criar uma validação muito customizada, exclusiva para nosso formulário como um todo.
+
+Por exemplo, caso o campo A do formulário for maior que 10, e o Campo B estiver verdadeiro, então validar campo C 
+
+Para estes casos, o trabalho será manual, podemos criar um código de validação e manipular as mensagens de erros logo
+depois do evento submit do formulário.
+
+Exemplo:
+
+```vue
+<template>
+  <nuxt-form :schema="schema" ref="form"  @submit="onSubmit"></nuxt-form>  
+</template>
+<script>
+export default {  
+  methods: {
+    onSubmit(valid, values, fields) {
+
+      if (valid){        
+        /* NOSSA LOGÌCA DE VALIDAÇÂO AQUI*/        
+        
+        
+        if (error){
+          // Mensagem de erro em um campo
+          fields.fieldA.setErrors('Campo inválido')
+          
+          // Mensagem de erro global
+          this.$refs.form.addError('Este formulário tem um problema')
+        } else {          
+          /* ENVIA DADOS PARA O BACKEND */          
+        }          
+      }
+    }
+  }
+}
+
+</script>
+```
+
+Outro exemplo muito comum, são erros vindo do backend, que deverão ser setados no formulário por aqui.
+
+### Modos de validação
+
+A validação no formulário pode funcionar de diferentes maneiras. Podemos configura-la através da prop "validationMode".
+
+Isso pode ser feito tando ao criar formulário ou ao criar um campo no modo standalone. Tempos 5 tipos para o modo 
+formulário e 3 tipos para o modo standalone.
+
+No modo formulário podemos ter:
+
+| Modo              | Descrição                                                                                                                                                |
+|-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| onChange          | Validação é executada sempre que o valor de um campo é alterado, validação em tempo real. Pode ser lento para formulários grandes.                       |
+| onBlur            | Validação é executada sempre que um campo perde o foco                                                                                                   |
+| onBlurOrInvalid   | Validação é executada sempre que um campo perde o foco ou quando esta inválido (ou seja, em tempo real para remover mensagem de erro antes possível)     |
+| onSubmit          | Validação só é executada quando usuário submeter o formulário (Mais rápido, usa pouco processamento, útíl em formulários com muitos campos)              |
+| onSubmitOrInvalid | Validação é executada quando usuário submete o formulário ou quando está inválido. (ou seja, em tempo real para remover mensagem de erro antes possível) |
+
+No modo standAlone teremos apenas os modos **onChange, onBlur e onBlurOrInvalid** 
+
 
 ## TODO: Debugger
 
@@ -399,11 +670,14 @@ export default {
 
 ## TODO: Criando um campo Customizado
 
-* Todos os campos devem estender BaseField
-* Tomar cuidado para não sobrescrever uma prop do BaseField, como  errors
-* Adicionar componente <error-message :errors="fErrors"/> para imprimir mensaens de erro padrão
+* TODO: Todos os campos devem estender BaseField
+* TODO:Tomar cuidado para não sobrescrever uma prop do BaseField, como errors
+* TODO:Adicionar componente <error-message :errors="fErrors"/> para imprimir mensaens de erro padrão
+* TODO: explicar metodos touch e blur
 
 ## TODO: i18n
+
+-TODO: Criar arquivos com traduções padrão, para ser mesclado pelo usuario no i18n, porém usuario deve fazer manualmente,explicar como
 
 # Rêferencias
 
@@ -416,3 +690,87 @@ export default {
 | language | Idioma utilizado caso não queira utilizar o modulo "nuxt-i18n". Caso precise da funcionalidade de idioma dinâmico necessário utilizar o "nuxt-i18n". Por enquanto apensar idioma pt-BR está disponível                                                                    | 'pt-BR' |
 
 Table Editor: https://www.tablesgenerator.com/markdown_tables
+
+## TODO: Props
+
+## TODO: Eventos
+
+## Métodos
+
+### clearErrors
+
+Limpa todas as mensagens de erros customizados no campo e erros definidos globalmente
+
+**IMPORTANTE:** Não limpa erros de validações internas (ex: required)
+
+### isValid
+
+Verifica se o formulário é válido
+
+**IMPORTANTE:** Não valida formulário, simplesmente retorna o resultado da última validação. Se tiver utiizando o modo "
+submit" ou "onSubmit" será necessário executado o método "validate()" antes.
+
+**Retorno** (boolean) Se formulário está válido ou não
+
+### setErrors
+
+Atribui mensagens de erros globais, limpa mensagens de erros antigos.
+
+| Parâmetro | Descrição                      | Tipo     | 
+|-----------|--------------------------------|----------|
+| errors    | Lista de mensagens de erro     | String[] |
+
+### addErrors
+
+Adiciona uma menagem de erros global, adiciona um erro sem limpar erros atigos
+
+| Parâmetro | Descrição             | Tipo   | 
+|-----------|-----------------------|--------|
+| errors    | Mensagem de erro      | String |
+
+### setValues
+
+Atribui valores aos campos do formulário (model). Só altera os campos definidos em "values" ao contrário de alterar
+v-model que limpa os valores de todos os campos antes de atrabituir (substitui).
+
+| Parâmetro | Descrição                                        | Tipo   | 
+|-----------|--------------------------------------------------|--------|
+| values    | Objeto com nome do campo e valor a ser atribuido | Object |
+
+**Retorno:** void
+
+### submit
+
+Utilizado quando se deseja submeter os dados do formulário, esta operação, executa validação completa e disapara o
+evento "submit"
+
+Por exemplo, ao submeter o formulário para o backend, execute o metodo submit() e no evento submit, verificamos
+validação dos campos, realizamos validações extras.
+
+### (async) validate
+
+Executa validação do formulário
+
+| Parâmetro       | Descrição                                                                                                                                                | Tipo     | Padrão          |
+|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|----------|-----------------|
+| fieldsName      | Lista com nome dos campos que serão validados                                                                                                            | String[] | Todos os campos |
+| validatedFields | Lista de nome de campos que já foram validados. Usado internamente, quando o campo A requisita validação de B e B requisita de A, evita "loop infinito". | string[] | []              |
+
+**Retorno:** void (Utilize o método "isValid", para saber se o formulário está válido)
+
+## Métodos de Campos
+
+Para ter acesso a estes métodos. necessário te a lista de componentes do formulário, isso pode ser feito através do
+evento "submit".
+
+Veja mais detalhes no evento submit
+
+### setErrors
+
+Define todas as mensagens de erro customizada para este campo. Erros de validações internas são mescladas com esta
+lista. Usado principalmente em conjunto com o evento "submit" para criar validações customizadas ou criar mensagem de
+erros vindo do backend
+
+**NOTA:** Também é possível pode manipular lista de erros através da prop "errors" do campo (quanto componente é
+definido via slots)
+

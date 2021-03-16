@@ -10,7 +10,7 @@
     <h2>Teste FORM</h2>
     <v-card>
       <v-container>
-        <nuxt-form :schema="schema" v-model="formData" ref="form" @submit="submit">
+        <nuxt-form :schema="schema" v-model="formData" ref="form" @submit="submit" validation-mode="onSubmitOrInvalid">
           <nv-text-field
               field-name="name"
               outlined
@@ -33,6 +33,7 @@
               hide-details
               dense
               label="Confirme a Senha"
+              :validators="{validator: 'equal', options: {field: 'password', otherLabel: 'Confirme a Senha'}}"
           />
         </nuxt-form>
 
@@ -50,6 +51,13 @@ export default {
   mounted() {
 
     // this.$refs.form.setValues({name: 'André'})
+
+    setTimeout(() => {
+
+      this.formData = {name: 'André'}
+      // this.$refs.form.setValues({name: 'André'})
+
+    }, 3500)
 
   },
 
@@ -79,16 +87,15 @@ export default {
 
       console.log(valid, values, fields)
 
-      fields.name.setErrors('Tem erro aqui pow')
-
-      setTimeout(() => {
-
-        this.$refs.form.clearErrors()
-
-      }, 4000)
-
-      this.$refs.form.setErrors(['Erro Global'])
-
+      // fields.name.setErrors('Tem erro aqui pow')
+      //
+      // setTimeout(() => {
+      //
+      //   this.$refs.form.clearErrors()
+      //
+      // }, 4000)
+      //
+      // this.$refs.form.setErrors(['Erro Global'])
 
 
     }

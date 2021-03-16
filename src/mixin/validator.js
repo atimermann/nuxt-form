@@ -10,12 +10,16 @@
 'use strict'
 
 import internalValidators from '../internal-validators'
-import {capitalize, isFunction, isPlainObject, cloneDeep} from 'lodash'
+import {capitalize, cloneDeep, isFunction, isPlainObject} from 'lodash'
 
 export default {
 
   props: {
-    validators: [String, Array, Object, Function]
+    validators: [String, Array, Object, Function],
+    validationMode: {
+      type: String,
+      validator: value => ['onChange', 'onBlur', 'onBlurOrInvalid'].includes(value)
+    }
   },
 
   data() {
@@ -29,12 +33,17 @@ export default {
         : [this.validators]
     }
 
-
     return {
       /**
        * Informa se o estado deste campo é valido ou não
        */
       validation: {
+
+        /**
+         * Se o usuário digitou algo
+         */
+        dirty: false,
+
         invalid: false,
         /**
          * Lista de validações definida para este campo
@@ -42,22 +51,48 @@ export default {
         validatorsList,
 
         /**
-         * Lista de erros que será exibido no campo
+         * Lista de erros de validação do campo
          */
-        validationErrors: []
+        errors: [],
+
+        /**
+         * Modo de validação,
+         *
+         * No modo formulário pode ser:
+         *      - onChange (valida se dirty e em qualquer alteração, ex: digitar do usuario)
+         *      - onBlur (valida se dirty e perder foco)
+         *      - onBlurOrInvalid (valida se dirty e (perder o foco ou se for invalido, com qualquer mudança)
+         *      - onSubmit (valida apenas no submit)
+         *      - onSubmitOrInvalid (valida apenas no submit ou com qualquer mudança)
+         *
+         * No modo standAlone:
+         *      - onChange (valida se dirty e em qualquer alteração, ex: digitar do usuario)
+         *      - onBlur (valida se dirty e perder foco)
+         *      - onBlurOrInvalid (valida se dirty e (perder o foco ou se for invalido, com qualquer mudança)*
+         *
+         */
+        mode: this.validationMode || 'onChange'
       },
     }
-  },
-
-  mounted() {
   },
 
   watch: {
     /**
      * Valida campo toda vez que value for alterado
      */
-    async fModel(value) {
-      await this.validate(value)
+    async fModel() {
+
+      if (
+        (this.validation.dirty && this.validation.mode === 'onChange')
+        ||
+        (
+          this.validation.dirty &&
+          this.validation.invalid &&
+          (this.validation.mode === 'onBlurOrInvalid' || this.validation.mode === 'onSubmitOrInvalid')
+        )
+      ) {
+        await this.validate()
+      }
     }
   },
 
@@ -65,25 +100,55 @@ export default {
   methods: {
 
     /**
-     * Valida campo
-     *
-     * @param value
-     * @return {Promise<void>}
+     *  Método que deve ser chamado sempre que usuario fizer uma alteração no campo
+     *  Difere de change, pois change pode ser acionado pelo formulário sem ação humana
      */
-    async validate(value) {
+    touch() {
+      this.validation.dirty = true
+    },
+    /**
+     *  Método que deve ser chamado sempre que usuario perder o foco
+     */
+    async blur() {
+      if (this.validation.mode === 'onBlur' || this.validation.mode === 'onBlurOrInvalid') {
+        await this.validate()
+      }
+
+    },
+
+    /**
+     * Executa validação deste campo
+     *
+     * @param {string[]} validatedFields  Usado internamente, indica quais campos já foram validados, impede que o
+     *    campo A requisite validação de B e B requisite de A, evitando assim, loop infinito
+     */
+    async validate(validatedFields = []) {
+
+      validatedFields.push(this.fieldName)
 
       let invalid = false
       let errors = []
+      /**
+       * Lista de outros campos que precisam ser validado (exemplo: verificação de senha)
+       * não funciona modo standalone
+       *
+       * @type {*[]}
+       */
+      let otherFieldsValidate = []
+
+      const processaValidationResult = ({valid, error, errorValues, validate}) => {
+        if (!valid) invalid = true
+        if (!valid) errors.push({error, errorValues})
+
+        // Reqyuisita validação de outro campo
+        if (validate && !validatedFields.includes(validate)) otherFieldsValidate.push(validate)
+      }
 
       // ATENÇÃO: invalid só pode ser alterado para true, dentro do loop
       for (const validator of this.validation.validatorsList) {
 
         if (isFunction(validator)) {
-
-          const {valid, error, errorValues} = await validator(value, cloneDeep(this.form.model))
-          if (!valid) invalid = true
-          if (!valid) errors.push({error, errorValues})
-
+          processaValidationResult(await validator(this.fModel, cloneDeep(this.form.model)))
         } else {
 
           let validatorName = undefined
@@ -101,18 +166,10 @@ export default {
             // passar this.form.model para um metodo em this.$options causa efeito colateral no objeto,  manter
             // clonedeep para formar passagem de parametro por cópia (objeto por patrão é passado por referencia)
             // evitando assim que model sejá alterado
-            const {
-              valid,
-              error,
-              errorValues
-            } = await this.$options.validators[validatorName](value, cloneDeep(this.form.model), validatorOptions)
-            if (!valid) invalid = true
-            if (!valid) errors.push({error, errorValues})
+            processaValidationResult(await this.$options.validators[validatorName](this.fModel, cloneDeep(this.form.model), validatorOptions))
 
           } else if (internalValidators[validatorName]) {
-            const {valid, error, errorValues} = await internalValidators[validatorName](value, cloneDeep(this.form.model), validatorOptions)
-            if (!valid) invalid = true
-            if (!valid) errors.push({error, errorValues})
+            processaValidationResult(await internalValidators[validatorName](this.fModel, cloneDeep(this.form.model), validatorOptions))
 
           } else {
             throw new Error(`Validation "${validatorName}" not found`)
@@ -122,36 +179,21 @@ export default {
       // Atualiza no final, para agaurdar as validações assincronas
       this.validation.invalid = invalid
 
-      this.validation.validationErrors = []
+      // Atualiza lista de erros
+      this.validation.errors = []
       for (const {error, errorValues} of errors) {
         if (this.options.nuxtI18n && this._i18n && this.$t) {
-          this.validation.validationErrors.push(capitalize(this.$t(error, errorValues || {})))
+          this.validation.errors.push(capitalize(this.$t(error, errorValues || {})))
         } else {
           // TODO: Implementar substituição de variavel, enquanto isso só aceita modo nuxt-i18n
           // const translate = require('../lang/' + this.options.language).default
           // this.validation.validationErrors.push(capitalize(translate[error]))
         }
-
       }
 
-      // TODO: ONDE PAREI
-      /**
-       * TODO:
-       *  - Modos de validação (on submit apenas, para formulários pesados) onblir
-       *
-       *  - Criar arquivos com traduções padrão, para ser mesclado pelo usuario no i18n, porém usuario deve fazer manualmente,explicar como
-       *  - documentar como fazer isso para validações customizada
-       *  - documentar transformar em assincrono
-       *  - validação fica nos campos, pode ser usado no modo standalone
-       *  - Campos podem implementar suas próprios validações (documentar)
-       *  - Validação global       *
-       *  - explicar bem como funciona error e errorValues que ficou um pouco confuso
-       *  - Exemplicar como adicionar erro no campo e erros globais
-       *  - Documentar que precisa converter para string antes de tentar validar usando biblitoeca validator
-       *  - criar referencia de metodos do form e dos fields
-       *  - Criar slots para customização do form
-
-       */
+      if (otherFieldsValidate.length > 0) {
+        this.form.validate(otherFieldsValidate, validatedFields)
+      }
 
     },
 

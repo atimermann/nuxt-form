@@ -40,6 +40,7 @@ export default {
        * Erros passado via prop
        */
       propsErrors: this.errors
+
     }
   },
   watch: {
@@ -63,14 +64,21 @@ export default {
   methods: {
     /**
      * Define refêrencia ao formulário pai (sem refêrencia no modo standalone)
+     * (Usado Internamente)
+     *
      * @param form
+     * @private
      */
     setForm(form) {
       this.form = form
+      this.validation.mode = form.validationMode
     },
     /**
-     * Usado pelo nuxtForm para setar um valor neste field (usado externamente)
+     * Usado pelo nuxtForm para setar um valor neste field
+     * (Usado internamente) altera v-model para alterar o valor deste campo
+     *
      * @param value
+     * * @private
      */
     setValue(value) {
       this.fModel = value
@@ -102,7 +110,7 @@ export default {
     fErrors() {
       return [].concat(
         this.propsErrors,
-        this.validation.validationErrors
+        this.validation.errors
       )
     }
   }

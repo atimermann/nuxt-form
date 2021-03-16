@@ -4,6 +4,8 @@
         v-model="fModel"
         v-bind="$props"
         :error="!!fErrors.length"
+        @keydown="touch"
+        @blur="blur"
     />
     <error-message :errors="fErrors"/>
   </div>

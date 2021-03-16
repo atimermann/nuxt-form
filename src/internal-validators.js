@@ -34,7 +34,7 @@ export default {
     const valueB = model[options.field] || ''
 
     return valueA === valueB
-      ? {valid: true}
-      : {valid: false, error: 'VALIDATOR_EQUAL', errorValues: {same: options.otherLabel}}
+      ? {valid: true, validate: options.field}
+      : {valid: false, error: 'VALIDATOR_EQUAL', errorValues: {same: options.otherLabel}, validate: options.field}
   }
 }

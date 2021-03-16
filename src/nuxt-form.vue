@@ -27,7 +27,7 @@
 
 <script>
 
-import { get , cloneDeep, isEqual} from 'lodash'
+import {cloneDeep, get, isEqual} from 'lodash'
 
 export default {
   name: "nuxt-form",
@@ -45,7 +45,32 @@ export default {
         // TODO: Validar se é Objeto ou instancia de nuxt-model
         return typeof value === 'object'
       }
-    }
+    },
+    /**
+     * Modo de validação:
+     *
+     *      - onChange (valida se dirty e em qualquer alteração, ex: digitar do usuario)
+     *      - onBlur (valida se dirty e perder foco)
+     *      - onBlurOrInvalid (valida se dirty e (perder o foco ou se for invalido, com qualquer mudança)
+     *      - onSubmit (valida apenas no submit)
+     *      - onSubmitOrInvalid (valida apenas no submit ou com qualquer mudança)
+     */
+    validationMode: {
+      type: String,
+      default: 'onChange',
+      validator: value => ['onChange', 'onBlur', 'onBlurOrInvalid', 'onSubmit', 'onSubmitOrInvalid'].includes(value)
+    },
+
+    /**
+     * Por padrão ao alterar valor de v-model, todos os campos tem seus valores sincronizados com model do formulário
+     * Porém, isto causa um efeito colateral, sempre que um campo altera seu valor, todo formulário é atualizado
+     * novamente, podendo causar lentidão em formulários muito grande.
+     *
+     * Utilize esta opção para melhorar performance nesses casos.
+     *
+     * @type {boolean}
+     */
+    disableFieldsUpdateByVModel: true
 
   },
 
@@ -121,7 +146,9 @@ export default {
     /**
      *  Substitui valores do formulário por novos
      */
-    value: function (values) {
+    value(values) {
+      // Otimiza
+      if (isEqual(values, this.model)) return
       this.model = {}
       this.setValues(values)
     }
@@ -131,7 +158,7 @@ export default {
   methods: {
 
     /**
-     * Atribui valores para vModel, sem limprar dados antigos
+     * Atribui valores para model, sem limprar dados antigos
      * @param values
      */
     setValues(values) {
@@ -145,8 +172,27 @@ export default {
     /**
      * Realiza Submit do Formulário
      */
-    submit() {
+    async submit() {
+      await this.validate()
       this.$emit('submit', this.isValid(), this.model, this.fieldsComponentIndex)
+    },
+
+
+    /**
+     * Executa validação do formulário
+     *
+     * @param {string[]} fieldsName       Lista nome de campos para validar
+     * @param {string[]} validatedFields  Usado internamente, indica quais campos já foram validados, impede que o
+     *    campo A requisite validação de B e B requisite de A, evitando assim, loop infinito
+     */
+    async validate(fieldsName = this.fieldsName, validatedFields = []) {
+      // valida sempre que perguntar e o modo de validação for no submit
+
+      console.log('VALIDANDO', fieldsName)
+      for (const fieldName of fieldsName) {
+        await this.fieldsComponentIndex[fieldName].validate(validatedFields)
+      }
+
     },
 
     /**
@@ -156,6 +202,7 @@ export default {
 
       let valid = true
       for (const fieldName of this.fieldsName) {
+
         if (this.fieldsComponentIndex[fieldName].validation.invalid) {
           valid = false
           break
@@ -180,6 +227,7 @@ export default {
     /**
      * Define erros globais (Limpa antigos)
      *
+     * @param {string[]} errors
      */
     setErrors(errors) {
       this.globalErrors = errors
@@ -187,6 +235,8 @@ export default {
 
     /**
      * Adiciona um erro Global
+     *
+     * @param {string} error
      */
     addErrors(error) {
       this.globalErrors.push(error)
@@ -209,7 +259,6 @@ export default {
           this._findVNodeFieldComponent(VNode)
         }
       }
-
     },
 
     /**
@@ -238,20 +287,6 @@ export default {
 
           fieldComponent.setForm(this)
 
-          // if (fieldType) this.fieldsType[fieldName] = fieldType
-          // if (fieldType) this.fieldsType[fieldName] = fieldType
-
-          // // Inicializa atributos com observable
-          // // TODO: Converter pra array, necessário implementar impressão de erro próprio
-          // this.vue.$set(this.errorMessages, fieldName, '')
-          // this.setVmodelAttribute(fieldName)
-          //
-          // // Meta atributos dos fields
-          // // Próprio Nome
-          // this.fieldsComponentIndex[fieldName].fieldName = fieldName
-          // // Próprio Nome
-          // this.fieldsComponentIndex[fieldName].fieldType = fieldType
-          //
           // Criação do evento que será disparado quando um campo atualizar o valor, atualizando model (listen escuta)
           fieldComponent.$on('input', (value) => {
 
