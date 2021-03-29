@@ -1,7 +1,32 @@
 # projeto
 
+## TODO:
+
+* Criar um metodo ou arquivo (Mixin) separado para tratar a geração automatica de campo à partir do modelo (marcado no código)
+* Criar uma função para gerar campo sautomaticamente apartir do tipo de dados do Model
+* Criar Método Debug para log, substituir console.log e logar tudo q é processado se o modo DEBUG for ativado (nuxt isDev???)
+* Criar testes unitários
+
 Núcleo
 ------
+
+* Integração com nuxt-model (vc passa o vmodel e monta o form, nuxt-modelo se comporta como um objeto) - deve funcionar com objeto simples também
+* NO model vamos ter <fieldName>Attrs ( USAR fieldType mesmo)
+* Permitir que o vModel sejá o próprio Model (por referencia), se o formulário não manipular um atributo, apenas ignora, mas guardar o valor ( Deu conflito com validador, alterar este comportamento quando a validação for refeita)
+* mask
+* Fluxo de bloqueio do form quando aguardando / Loading  
+* Função habilitar/ desabilitar
+* Dar foco ao primeiro campo com erro após validação  
+* Botões de submit padronizado
+* Limpar campo / Limpar formulário
+* Criar Mapper através de função definida no field e de altera valores na troca de informação entre field e form  
+* criar função focus, para forcar de fora do formulário, passando nome
+* Filtros
+* Criar slots pra customizar outras areas do formulário como actions (botões de ação)
+* Modu debug (configurado via modulo)
+* Logger, que pode ser desativado no modo produção (bom pra detectar código repetido)
+
+
 
 Documentar bem todo o funcionamento, fluxo e forma de uso com muitos exemplos, como criar um field
 
@@ -15,9 +40,9 @@ Documentar bem todo o funcionamento, fluxo e forma de uso com muitos exemplos, c
     *[OK] mapClildren
     *[OK] Será o modo 1, onde o usuário cria os campos e o form varre atrás dele (MODO CUSTOMIZAD) - Form customizado, qualquer layout desejado (DEMORA MAIS PRA CRIAR)
     *[OK] No modo 2, o form cria os childrens via slots baseado, no schema/ model (MODO AUTOMATICO) - Form simples, linear  (CRIAÇÃO RÁPIDA)
-* Contexto deve carregar automaticamente através de um plugin, pode ser acesso diretamente pois o nuxt-form é um componente
+*[OK] Contexto deve carregar automaticamente através de um plugin, pode ser acesso diretamente pois o nuxt-form é um componente
 *[OK] Vai ser um módulo do nuxt
-* Integração com nuxt-model (vc passa o vmodel e monta o form, nuxt-modelo se comporta como um objeto) - deve funcionar com objeto simples também
+
 
 *[OK] Não existirá mais objeto formHandler
 * validações:
@@ -44,15 +69,12 @@ Documentar bem todo o funcionamento, fluxo e forma de uso com muitos exemplos, c
 * [OK] $invalid
 
 
-* Criar slots para customização do form
+
 
 * [OK] Sistema de Erros:
-    * [OK] Por campo e por form
-   
-
+    * [OK] Por campo e por form   
     * modos de validação impressão de erro
-        * Apenas ao submeter, porém limpa validação assim que o campo é alterado
-    
+        * Apenas ao submeter, porém limpa validação assim que o campo é alterado    
     * Form pede pro campo se validar
     * Validação separada da mensagem de erro, Validação ao vivo
     * Valida em todo change, field tem um status $valid
@@ -66,18 +88,12 @@ Documentar bem todo o funcionamento, fluxo e forma de uso com muitos exemplos, c
     * [OK] Passados externamente (podendo ser vindo do backend, deve setar externamente)
 
 *[OK] Remover MapperObject
-* Filtros
-* Options
-* Logger, que pode ser desativado no modo produção
-* Modu debug (configurado via modulo)
-* Criar slots para customizar layout do formulário (no modo schema)
-* Criar slots pra customizar outras areas do formulário como actions (botões de ação)
+
 
 Outros Requisitos
 -----------------
 
-* Função habilitar/ desabilitar
-* NO model vamos ter <fieldName>Attrs
+
 * [OK] Separar FormHandler em um módulo próprio -> NPM
 * [OK] Separar Model em um módulo próprio -> NPM
 * [OK] Implementar validação, remover biblioteca atual, utilizar:
@@ -85,18 +101,15 @@ Outros Requisitos
 
 * [OK] Corrigir hide-details, mb-3
 
-* Dar foco ao primeiro campo com erro após validação
+
 * [OK] Criar nova funcionalidade de impressão de erro abaixo dos campos que permita Multilinhas / Label
 * [OK] Configurar arquivos GQL separadamente
 * [OK] Tradução de erro
-* Fluxo de bloqueio do form quando aguardando,
-* Loading
+
 
 * [OK] Campos complexos podem implementar validações complexas internamente
 * [OK] Validação pode ser definida dinamicamente
-* criar função focus, para forcar de fora do formulário, passando nome
-* mask
-* Limpar campo / Limpar formulário
+
 
 Discussão:
 
@@ -113,6 +126,6 @@ Discussão:
 
 
 * [XK] Criar uma diretiva (em vez de v-form, ter o próprio)
-* Permitir que o vModel sejá o próprio Model (por referencia), se o formulário não manipular um atributo, apenas ignora, mas guardar o valor ( Deu conflito com validador, alterar este comportamento quando a validação for refeita)
+
 
 * [OK] Opção de montar o form automaticamente passando um schema ou um objeto nuxt-model (configurado) ou montar os campos automaticamente

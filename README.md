@@ -9,7 +9,7 @@ O Nuxt form é composto por dois compoenentes principais:
 
     Formulário (Form) e Campos (Field)
 
-## Caractéristicas
+## Caracteristicas
 
 As principais caractéristicas do Nuxt Form são:
 
@@ -35,11 +35,11 @@ As principais caractéristicas do Nuxt Form são:
 
 ## Documentação
 
-* Manter sempre documentação atializada com muitos exemplos e refêrencias.
+Para devs: Manter esta documentação sempre atualizada com exemplos e refêrencias.
 
 ## Instalação
 
-Instale o pacote npm:
+Instale o seguinte pacote:
 
 ```bash
   npm install @agtm/nuxt-form
@@ -49,7 +49,14 @@ Adicione no arquivo nuxt.config.js:
 
 ```bash
 modules: [
-  '@agtm/nuxt-form/nuxt'
+  [
+    '@agtm/nuxt-form/nuxt',
+    {
+      nuxtI18n: true,
+      language: 'pt-BR',
+      debugger: false
+    }
+  ]
 ],
 ```
 
@@ -94,8 +101,6 @@ isto basta alterar "formData" que o formulário será atualizado imediatamente.
 
 **Importante:** Todos os dados do formulários existentes serão perdidos. Para alterar alguns campos, utilize o método
 setModel via ref
-
-## TODO: Opções do Modulo
 
 ## Modo Stand Alone
 
@@ -149,7 +154,8 @@ Por exemplo:
   },
   {
     fieldName: 'Name3',
-    fieldType: 'nv-text-field'
+    fieldType: 'nv-text-field',
+    validators: ['required', this.validation]
   }
 ]
 
@@ -158,7 +164,7 @@ Por exemplo:
 * No exemplo acima descrevemos 3 campos name, name2 e name3, do tipo texto simples
 * fieldName mapeia o nome do atributo definido no modelo (v-model) diretamente, então fieldName é importante para acesso
   aos dados
-* Schema foi criado tendo em mende velocidade de desenvolvimento, portanto todos os campos serão renderizados um embaixo
+* Schema foi criado tendo em mente velocidade de desenvolvimento, portanto todos os campos serão renderizados um embaixo
   do outro de forma simples. Para posicionar os campos ou criar layouts mais complexos utilize slots
 
 Exemplo completo:
@@ -184,7 +190,8 @@ export default {
         },
         {
           fieldName: 'Name3',
-          fieldType: 'nv-text-field'
+          fieldType: 'nv-text-field',
+          validators: 'required'
         }
       ]
     }
@@ -331,7 +338,61 @@ export default {
 
 ```
 
-## TODO: nuxt-model
+## Nuxt Model
+
+O Nuxt Form tem integração com o Nuxt Model, podemos passar uma instancia de Model e gerar o form será gerado 
+automaticamente à partir desse Model, além de manpilar dados do model.
+
+Exemplo de uso:
+
+```javascript
+// aluno.model.js
+
+import {Model} from '@agtm/nuxt-model'
+
+export default class AlunoModel extends Model {
+  static nameType = {
+    type: 'string',
+    fieldType: 'nv-text-field'
+  }
+}
+```
+* Se alterarmos do tipo do atributo destring para objeto podemos definir ali qualquer atributo que seria defino no 
+  schema
+  
+```vue
+<template>
+  <div>
+    <nuxt-form v-model="aluno" style="border: solid 1px">
+    </nuxt-form>
+    <v-btn @click="check">Check Model</v-btn>
+  </div>
+</template>
+
+<script>
+import AlunoModel from "@/models/aluno.model";
+export default {
+  data() {
+    return {
+      aluno: null
+    }
+  },
+  created() {
+    this.aluno = AlunoModel.create({name: 'João'})
+    this.check()
+  },
+  methods: {
+    check() {
+      this.aluno.name = 'Maria'      
+    }
+  }
+}
+</script>
+```
+
+* Note que além do Model ser usado em substituição do Schema, ele também é usado em substituição de v-model.
+* A regra de prioridade de atributos do field é SLOT => SCHEMA => MODEL  portanto é possivel sobrescrever atributos do 
+  model com schema ou slots.
 
 ## Objetos Aninhados
 
@@ -351,14 +412,14 @@ Imagine a seguinte objeto de dados:
 }
 ```
 
-Agora imagine que você precise criar um campo para editar apenas o atributo "nome" dentro do objeto "personal" e não "
-personal"
+Agora imagine que você precise criar um campo para editar apenas o atributo "nome" dentro do objeto "personal" e não 
+diretamente  "personal"
 
 Isso é feito facilmente definindo o nome do campo como "personal.name".
 
 exemplo:
 
-```vue
+
 ```vue
 <template>
   <nuxt-form :schema="schema" v-model="formData">
@@ -539,11 +600,12 @@ A função criada terá os seguintes argumentos:
 | value     | Valor do campo no qual queremos validar                                                                                                                                     | Any    |
 | model     | Uma cópia do model do form, ou seja podemos acessar valores de qualquer outro campo. Exemplo: verificar se a senha preenchida pelo usuário em outro campo é idêntico a este | Object |
 
-O mais importante é agora é o retorno, deve serum objeto representando o resultado da validação e deve estar
-necessáriamente no seguinte formato:
-
 **IMPORTANTE:** Validações podem ser assincronas (adicionar async na função customizada).
+
 ** NOTA: ** Se utilizar a biblioteca validator, é necessário converter para string o valor recebido antes de validar
+
+O mais importante é agora é o retorno, deve ser um objeto representando o resultado da validação e deve estar
+necessáriamente no seguinte formato:
 
 #### Campo validado com sucesso:
 
@@ -568,7 +630,7 @@ No exemplo acima 'VALIDATOR_REQUIRED' será traduzido para "campo obrigatório",
 
 #### Mensagem de erro com váriaveis na tradução
 
-Seguindo o nuxt-i18n, você pode utiizare váriaveis na tradução como no exemplo abaixo:
+Seguindo o nuxt-i18n, você pode utiizar váriaveis na tradução como no exemplo abaixo:
 
 ```javascript
 return {valid: false, error: 'VALIDATOR_EQUAL', errorValues: {same: model.otherLabel}}
@@ -594,8 +656,8 @@ equal(value, model)
 
 ### Validação de Campo
 
-Existem alguns tipos de campos, que requerem validações especiais que só servem pra este campo em específico. Neste
-caso a validação é implementada diretamente na implementação do campo customizado.
+Existem alguns tipos de campos, que requerem validações especiais que só servem pra este campo em específico. Neste caso
+a validação é implementada diretamente na implementação do campo customizado.
 
 Segue as mesmas regras de validação customizada.
 
@@ -603,9 +665,9 @@ Leia mais na sessão: "Criando campos Customizados"
 
 ### Validação Global
 
-Em alguns casos, queremos criar uma validação muito customizada, exclusiva para nosso formulário como um todo.
+Em alguns casos, precisamos criar validações mais customizadas, exclusiva para o nosso formulário como um todo.
 
-Por exemplo, caso o campo A do formulário for maior que 10, e o Campo B estiver verdadeiro, então validar campo C 
+Por exemplo, caso o campo A do formulário for maior que 10, e o campo B estiver verdadeiro, então validar campo C
 
 Para estes casos, o trabalho será manual, podemos criar um código de validação e manipular as mensagens de erros logo
 depois do evento submit do formulário.
@@ -613,27 +675,28 @@ depois do evento submit do formulário.
 Exemplo:
 
 ```vue
+
 <template>
-  <nuxt-form :schema="schema" ref="form"  @submit="onSubmit"></nuxt-form>  
+  <nuxt-form :schema="schema" ref="form" @submit="onSubmit"></nuxt-form>
 </template>
 <script>
-export default {  
+export default {
   methods: {
     onSubmit(valid, values, fields) {
 
-      if (valid){        
-        /* NOSSA LOGÌCA DE VALIDAÇÂO AQUI*/        
-        
-        
-        if (error){
+      if (valid) {
+        /* NOSSA LOGÌCA DE VALIDAÇÂO AQUI*/
+
+
+        if (error) {
           // Mensagem de erro em um campo
           fields.fieldA.setErrors('Campo inválido')
-          
+
           // Mensagem de erro global
           this.$refs.form.addError('Este formulário tem um problema')
-        } else {          
-          /* ENVIA DADOS PARA O BACKEND */          
-        }          
+        } else {
+          /* ENVIA DADOS PARA O BACKEND */
+        }
       }
     }
   }
@@ -648,7 +711,7 @@ Outro exemplo muito comum, são erros vindo do backend, que deverão ser setados
 
 A validação no formulário pode funcionar de diferentes maneiras. Podemos configura-la através da prop "validationMode".
 
-Isso pode ser feito tando ao criar formulário ou ao criar um campo no modo standalone. Tempos 5 tipos para o modo 
+Isso pode ser feito tando ao criar formulário ou ao criar um campo no modo standalone. Tempos 5 tipos para o modo
 formulário e 3 tipos para o modo standalone.
 
 No modo formulário podemos ter:
@@ -661,8 +724,7 @@ No modo formulário podemos ter:
 | onSubmit          | Validação só é executada quando usuário submeter o formulário (Mais rápido, usa pouco processamento, útíl em formulários com muitos campos)              |
 | onSubmitOrInvalid | Validação é executada quando usuário submete o formulário ou quando está inválido. (ou seja, em tempo real para remover mensagem de erro antes possível) |
 
-No modo standAlone teremos apenas os modos **onChange, onBlur e onBlurOrInvalid** 
-
+No modo standAlone teremos apenas os modos **onChange, onBlur e onBlurOrInvalid**
 
 ## TODO: Debugger
 
@@ -671,13 +733,14 @@ No modo standAlone teremos apenas os modos **onChange, onBlur e onBlurOrInvalid*
 ## TODO: Criando um campo Customizado
 
 * TODO: Todos os campos devem estender BaseField
-* TODO:Tomar cuidado para não sobrescrever uma prop do BaseField, como errors
-* TODO:Adicionar componente <error-message :errors="fErrors"/> para imprimir mensaens de erro padrão
+* TODO: Tomar cuidado para não sobrescrever uma prop do BaseField, como errors
+* TODO: Adicionar componente <error-message :errors="fErrors"/> para imprimir mensaens de erro padrão
 * TODO: explicar metodos touch e blur
 
 ## TODO: i18n
 
--TODO: Criar arquivos com traduções padrão, para ser mesclado pelo usuario no i18n, porém usuario deve fazer manualmente,explicar como
+-TODO: Criar arquivos com traduções padrão, para ser mesclado pelo usuario no i18n, porém usuario deve fazer
+manualmente,explicar como
 
 # Rêferencias
 

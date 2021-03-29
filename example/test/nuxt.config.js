@@ -49,6 +49,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@agtm/nuxt-model/nuxt',
     [
       '@agtm/nuxt-form/nuxt',
       {

@@ -1,14 +1,9 @@
 <template>
   <div>
-    <div>--- BEGIN nuxt-form vars ---</div>
-    fieldsName={{ fieldsName }} <br>
-    value={{ value }} <br/>
-    model={{ model }} <br/>
-    preLoadedFields={{ preLoadedFields }}
-    <div>--- END nuxt-form vars ---</div>
     <!--    Campos criados manualmente -->
     <slot></slot>
-    <div v-for="(field, index) in validSchema" :key="index">
+    <div v-for="(field, index) in generatedSchema()" :key="index">
+
       <!--  Campos criados manualmente mas de  posição customizada (opcional, só implementar se for simples)   -->
       <slot v-if="field.fromSlot" :name="field.fieldName"></slot>
       <!--   Campos criados automaticamente  -->
@@ -27,7 +22,7 @@
 
 <script>
 
-import {cloneDeep, get, isEqual} from 'lodash'
+import {cloneDeep, defaults, get, isEqual} from 'lodash'
 
 export default {
   name: "nuxt-form",
@@ -36,13 +31,18 @@ export default {
     /**
      * Descreve os campos do formulário (formato json) mapeia campo com dado
      */
-    schema: Array,
+    schema: {
+      type: Array,
+      default: () => []
+    },
     /**
      * Representa os dados de todos os campos do formulário, obrigatório ser objeto ou instancia de nuxt-model
      */
     value: {
+      default() {
+        return {}
+      },
       validator: function (value) {
-        // TODO: Validar se é Objeto ou instancia de nuxt-model
         return typeof value === 'object'
       }
     },
@@ -88,7 +88,7 @@ export default {
        * List de campos pré carregados nos slots, usado para o gerador automatico não recarregar o mesmo campo
        * duas vezes
        */
-      preLoadedFields: [],
+      preLoadedFieldsName: [],
       /**
        * Lista Indexada pelo nome de todos os campos do formulário
        * Dicionário de componentes
@@ -124,21 +124,27 @@ export default {
 
   mounted() {
     this._mapChildrens(this)
-    // Sincroniza form(model) e fields valores vindo da prop
-    this.setValues(this.value)
-  },
 
-  computed: {
-    /**
-     * Ignora fields definidos no schema, porém adicionaros nos slots
-     */
-    validSchema() {
-      return this.schema
-          .filter(field => !this.preLoadedFields.includes(field.fieldName))
-          .map(field => {
-            field.fromSlot = Object.keys(this.$slots).includes(field.fieldName)
-            return field
-          })
+    // Verifica se é um Nuxt Model
+    if (this.value.constructor._modelClass) {
+      // Vincula value (instancia de nuxtModel) ao model e impede q seja alterado
+      Object.defineProperty(this, 'model', {
+        enumerable: false,   // não enumerável
+        configurable: false, // não configurável
+        writable: false,     // não gravável
+        value: this.value
+      })
+
+      // Sincroniza sempre que ocorrer uma alteração
+      this.value.onChange((attr, value) => {
+        console.log('Change', attr, value)
+        this._syncFieldsWithFormModel()
+      })
+
+      this._syncFieldsWithFormModel()
+    } else {
+      // Sincroniza form(model) e fields valores vindo da prop
+      this.setValues(this.value)
     }
   },
 
@@ -156,6 +162,59 @@ export default {
 
 
   methods: {
+
+    /**
+     * Gera schema que será renderizado pelo formulario
+     */
+    generatedSchema() {
+
+      const definedFieldsNameInSchema = []
+
+      /**
+       * Ignora fields definidos no schema, em favor dos fields adicionados via slots
+      */
+      const schema = this.schema
+          .filter(field => !this.preLoadedFieldsName.includes(field.fieldName))
+          .map(field => {
+            definedFieldsNameInSchema.push(field.fieldName)
+            field.fromSlot = Object.keys(this.$slots).includes(field.fieldName)
+            return field
+          })
+
+
+      // TODO: Criar um metodo ou arquivo (Mixin) separado para tratar a geração automatica de campo à partir do modelo
+      // Gera Schema Baseado no Model
+      if (this.value.constructor._modelClass) {
+        const Class = this.value.constructor
+        for (const classAttribute of Object.getOwnPropertyNames(Class)) {
+          if (classAttribute.substr(-4) === 'Type') {
+            const attrName = classAttribute.substring(0, classAttribute.length - 4)
+
+            if (!this.preLoadedFieldsName.includes(attrName) && !definedFieldsNameInSchema.includes(attrName)) {
+
+              let attrType = cloneDeep(Class[classAttribute])
+              if (typeof attrType === 'string') {
+                attrType = {
+                  type: attrType
+                }
+              }
+
+              // TODO: Criar uma função para gerar campo sautomaticamente apartir do tipo de dados do Model
+              //  Atualmente está fixo em nv-text-field
+              delete attrType.type
+              schema.push(defaults(attrType, {
+                    fieldType: 'nv-text-field',
+                    fieldName: attrName
+                  })
+              )
+            }
+
+          }
+        }
+      }
+
+      return schema
+    },
 
     /**
      * Atribui valores para model, sem limprar dados antigos
@@ -250,7 +309,7 @@ export default {
       if (VNode.data && VNode.data.attrs) {
         const fieldName = VNode.data.attrs['field-name']
         if (fieldName) {
-          this.preLoadedFields.push(fieldName)
+          this.preLoadedFieldsName.push(fieldName)
         }
       }
 
@@ -271,7 +330,6 @@ export default {
     _mapChildrens(component) {
 
       for (const fieldComponent of component.$children) {
-
 
         if (fieldComponent.isNuxtFormFieldInstance) {
 
@@ -362,8 +420,8 @@ export default {
     },
 
     /**
-     * Atribui valores a um atributo recursivamente, configurando observe rno processo
-     * Não muda objeto
+     * Atribui valores a um atributo recursivamente, configurando observer no processo
+     * Não altera objeto
      *
      */
     _setObjectAttribute(object, attrName, value) {
@@ -400,6 +458,8 @@ export default {
      * @private
      */
     _syncFieldsWithFormModel() {
+
+      console.log('Sincronizando...')
       for (const fieldName of this.fieldsName) {
         this.fieldsComponentIndex[fieldName].setValue(get(this.model, fieldName))
       }
