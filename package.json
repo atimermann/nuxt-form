@@ -34,5 +34,9 @@
   "dependencies": {
     "lodash": "^4.17.21",
     "validator": "^13.5.2"
-  }
+  },
+  "files": [
+    "src/",
+    "nuxt/"
+  ]
 }
