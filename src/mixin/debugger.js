@@ -14,7 +14,8 @@ export default {
 
   mounted() {
 
-    if (this.options?.debugger) {
+    //TODO:  if (this.options?.debugger) { Não compatível com nuxt, alterar quando migrar
+    if (this.options && this.options.debugger) {
       this.insertDebugInfo()
     }
 
