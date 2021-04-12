@@ -8,8 +8,9 @@
       <slot v-if="field.fromSlot" :name="field.fieldName"></slot>
       <!--   Campos criados automaticamente  -->
       <component
-          v-else
+          v-else-if="!field.hide"
           :is="field.fieldType"
+          v-bind="field"
           :field-name="field.fieldName"
           :validators="field.validators"
       />
@@ -22,7 +23,7 @@
 
 <script>
 
-import {cloneDeep, defaults, get, isEqual} from 'lodash'
+import {cloneDeep, defaults, get, isEqual, toNumber} from 'lodash'
 
 export default {
   name: "nuxt-form",
@@ -172,7 +173,7 @@ export default {
 
       /**
        * Ignora fields definidos no schema, em favor dos fields adicionados via slots
-      */
+       */
       const schema = this.schema
           .filter(field => !this.preLoadedFieldsName.includes(field.fieldName))
           .map(field => {
@@ -200,9 +201,9 @@ export default {
               }
 
               // TODO: Criar uma função para gerar campo sautomaticamente apartir do tipo de dados do Model
-              //  Atualmente está fixo em nv-text-field
+              // Atualmente está fixo em nv-text-field
               delete attrType.type
-              schema.push(defaults(attrType, {
+              schema.push(defaults(attrType,{
                     fieldType: 'nv-text-field',
                     fieldName: attrName
                   })
@@ -404,9 +405,7 @@ export default {
       // Chegou na folha da arvore
       if (path.length === 0) {
 
-        object[attrName] === undefined
-            ? this.$set(object, attrName, value)
-            : object[attrName] = value
+        this._setObjectValue(object, attrName, value)
 
       } else {
 
@@ -416,6 +415,52 @@ export default {
         }
         this._setObject(object[attrName], path, value)
       }
+
+    },
+
+    /**
+     *
+     * Atribui valor ao model
+     *
+     */
+    _setObjectValue(object, attrName, value) {
+
+      // Se Instancia de Nuxt Model
+      if (object.constructor._modelClass) {
+
+        // Nuxt model, tem uma verificaçãod e tipo forte, como o form sempre retorna string, precisamos verificar o
+        // tipo da Classe, e converter de acordo
+
+        // Vai na classe puxar o tipo
+        let fieldType = object.constructor[attrName + 'Type']
+
+        if (!fieldType) {
+          throw new Error(`Field "${attrName}" not defined in model "${object.constructor.getClassName()}"`)
+        }
+
+        // Se tiver no formato objeto (São 2 tipos)
+        if (typeof fieldType !== 'string') {
+          fieldType = fieldType.type
+        }
+
+        // Não vamos forçar tipo string, vamos assumir que o formulário sempre envia string, pode ser necessário alterar
+        // no futuro, date já aceita string
+        if (fieldType === 'number') {
+          object[attrName] = toNumber(value)
+        } else if (fieldType === 'boolean') {
+          object[attrName] = !!value
+        } else {
+          object[attrName] = value
+        }
+
+
+      } else {
+
+        object[attrName] === undefined
+            ? this.$set(object, attrName, value)
+            : object[attrName] = value
+      }
+
 
     },
 

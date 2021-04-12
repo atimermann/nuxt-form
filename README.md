@@ -340,7 +340,7 @@ export default {
 
 ## Nuxt Model
 
-O Nuxt Form tem integração com o Nuxt Model, podemos passar uma instancia de Model e gerar o form será gerado 
+O Nuxt Form tem integração com o Nuxt Model, podemos passar uma instancia de Model e gerar o form será gerado
 automaticamente à partir desse Model, além de manpilar dados do model.
 
 Exemplo de uso:
@@ -357,10 +357,12 @@ export default class AlunoModel extends Model {
   }
 }
 ```
-* Se alterarmos do tipo do atributo destring para objeto podemos definir ali qualquer atributo que seria defino no 
+
+* Se alterarmos do tipo do atributo destring para objeto podemos definir ali qualquer atributo que seria defino no
   schema
-  
+
 ```vue
+
 <template>
   <div>
     <nuxt-form v-model="aluno" style="border: solid 1px">
@@ -371,6 +373,7 @@ export default class AlunoModel extends Model {
 
 <script>
 import AlunoModel from "@/models/aluno.model";
+
 export default {
   data() {
     return {
@@ -383,7 +386,7 @@ export default {
   },
   methods: {
     check() {
-      this.aluno.name = 'Maria'      
+      this.aluno.name = 'Maria'
     }
   }
 }
@@ -391,8 +394,28 @@ export default {
 ```
 
 * Note que além do Model ser usado em substituição do Schema, ele também é usado em substituição de v-model.
-* A regra de prioridade de atributos do field é SLOT => SCHEMA => MODEL  portanto é possivel sobrescrever atributos do 
+* A regra de prioridade de atributos do field é SLOT => SCHEMA => MODEL portanto é possivel sobrescrever atributos do
   model com schema ou slots.
+
+### Impedir que um campo do Model seja renderizado no formulário
+
+Para não renderizar um campo no formulário use o atributo "hide" no schema:
+
+```javascript
+{
+  data()
+  {
+    return {
+      schema: [
+        {
+          fieldName: 'id',
+          hide: true
+        }
+      ]
+    }
+  }
+}
+```
 
 ## Objetos Aninhados
 
@@ -412,15 +435,15 @@ Imagine a seguinte objeto de dados:
 }
 ```
 
-Agora imagine que você precise criar um campo para editar apenas o atributo "nome" dentro do objeto "personal" e não 
+Agora imagine que você precise criar um campo para editar apenas o atributo "nome" dentro do objeto "personal" e não
 diretamente  "personal"
 
 Isso é feito facilmente definindo o nome do campo como "personal.name".
 
 exemplo:
 
-
 ```vue
+
 <template>
   <nuxt-form :schema="schema" v-model="formData">
     <nv-text-field
