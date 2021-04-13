@@ -69,7 +69,7 @@ export default {
   validators: {
     mustBeEmpty(value, model, options) {
 
-      value ||= ''
+      value = value || ''
       return !validatorLibrary.isEmpty(value, options)
           ? {valid: true}
           : {valid: false, error: 'VALIDATOR_DEFAULT'}
