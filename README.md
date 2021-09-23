@@ -753,12 +753,6 @@ No modo standAlone teremos apenas os modos **onChange, onBlur e onBlurOrInvalid*
 
 ## TODO: Refêrencia de campos
 
-## TODO: Criando um campo Customizado
-
-* TODO: Todos os campos devem estender BaseField
-* TODO: Tomar cuidado para não sobrescrever uma prop do BaseField, como errors
-* TODO: Adicionar componente <error-message :errors="fErrors"/> para imprimir mensaens de erro padrão
-* TODO: explicar metodos touch e blur
 
 ## TODO: i18n
 
@@ -860,3 +854,7 @@ erros vindo do backend
 **NOTA:** Também é possível pode manipular lista de erros através da prop "errors" do campo (quanto componente é
 definido via slots)
 
+
+
+
+* [Criando novos campos](./docs/createField.md)

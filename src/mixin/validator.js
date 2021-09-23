@@ -16,6 +16,9 @@ export default {
 
   props: {
     validators: [String, Array, Object, Function],
+    /**
+     * Definido no modo StandAlone
+     */
     validationMode: {
       type: String,
       validator: value => ['onChange', 'onBlur', 'onBlurOrInvalid'].includes(value)
@@ -176,7 +179,7 @@ export default {
           }
         }
       }
-      // Atualiza no final, para agaurdar as validações assincronas
+      // Atualiza no final, para aguardar as validações assincronas
       this.validation.invalid = invalid
 
       // Atualiza lista de erros
@@ -200,7 +203,7 @@ export default {
   },
 
   /**
-   * Campos podemos implementar suas próprias validações
+   * Campos podem implementar suas próprias validações
    */
   validators: {}
 }

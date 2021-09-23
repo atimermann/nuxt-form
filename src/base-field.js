@@ -31,7 +31,7 @@ export default {
        */
       form: null,
       /**
-       * fieldModel, represenda o valor do formulário, pode ser alterado extarnamente:
+       * fieldModel, represenda o valor do formulário, pode ser alterado esternamente:
        *  - Quando o formulario altera o valor via setValue
        *  - Quando no modo StandAlone o v-model é alterado (watch value + $emit('input')
        */
