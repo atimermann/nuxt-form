@@ -203,7 +203,7 @@ export default {
               // TODO: Criar uma função para gerar campo sautomaticamente apartir do tipo de dados do Model
               // Atualmente está fixo em nv-text-field
               delete attrType.type
-              schema.push(defaults(attrType,{
+              schema.push(defaults(attrType, {
                     fieldType: 'nv-text-field',
                     fieldName: attrName
                   })
@@ -339,6 +339,10 @@ export default {
           if (!fieldName) {
             console.error(fieldComponent.$attrs)
             throw new Error('Attribute fieldName é required in field')
+          }
+
+          if (this.fieldsComponentIndex[fieldName]) {
+            throw new Error(`Field "${fieldName}" already exist.`)
           }
 
           this.fieldsComponentIndex[fieldName] = fieldComponent

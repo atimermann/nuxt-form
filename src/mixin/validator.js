@@ -16,25 +16,26 @@ export default {
 
   props: {
     validators: [String, Array, Object, Function],
-    /**
-     * Definido no modo StandAlone
-     */
     validationMode: {
       type: String,
       validator: value => ['onChange', 'onBlur', 'onBlurOrInvalid'].includes(value)
     }
   },
 
-  data() {
+  created() {
 
-    let validatorsList
     if (!this.validators) {
-      validatorsList = []
+      this.validation.validatorsList = []
     } else {
-      validatorsList = Array.isArray(this.validators)
+      this.validation.validatorsList = Array.isArray(this.validators)
         ? this.validators
         : [this.validators]
     }
+
+  },
+
+  data() {
+
 
     return {
       /**
@@ -51,7 +52,7 @@ export default {
         /**
          * Lista de validações definida para este campo
          */
-        validatorsList,
+        validatorsList: [],
 
         /**
          * Lista de erros de validação do campo
@@ -75,7 +76,7 @@ export default {
          *
          */
         mode: this.validationMode || 'onChange'
-      },
+      }
     }
   },
 
@@ -179,13 +180,15 @@ export default {
           }
         }
       }
-      // Atualiza no final, para aguardar as validações assincronas
+      // Atualiza no final, para agaurdar as validações assincronas
       this.validation.invalid = invalid
 
       // Atualiza lista de erros
       this.validation.errors = []
+
       for (const {error, errorValues} of errors) {
-        if (this.options.nuxtI18n && this._i18n && this.$t) {
+
+        if (this._i18n && this.$t) {
           this.validation.errors.push(capitalize(this.$t(error, errorValues || {})))
         } else {
           // TODO: Implementar substituição de variavel, enquanto isso só aceita modo nuxt-i18n
@@ -198,12 +201,12 @@ export default {
         this.form.validate(otherFieldsValidate, validatedFields)
       }
 
-    },
+    }
 
   },
 
   /**
-   * Campos podem implementar suas próprias validações
+   * Campos podemos implementar suas próprias validações
    */
   validators: {}
 }

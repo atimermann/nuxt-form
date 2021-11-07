@@ -1,8 +1,7 @@
-nem asdsadasdasdasdasdas## TODO: Criando um campo Customizado
+## Criando um campo Customizado
 
-* TODO: Todos os campos devem estender BaseField
 * TODO: Tomar cuidado para não sobrescrever uma prop do BaseField, como errors
-* TODO: Adicionar componente <error-message :errors="fErrors"/> para imprimir mensaens de erro padrão
+* TODO: Adicionar componente <error-message :errors="fErrors"/> para imprimir mensagens de erro padrão
 * TODO: explicar metodos touch e blur
 
 Podemos criar campos customizado tanto específico para o projeto ou estander o nuxt-form com novos campos. Esta 
