@@ -16,9 +16,11 @@ export default {
 
   required(value, model, options) {
 
-    value += ''
     //TODO: value ||= '' incompativel com nuxt, aguardar e alterar quando atualizar
-    value = value || ''
+    if (value === undefined || value === null) {
+      value = ''
+    }
+    value += ''
     return validatorLibrary.isEmpty(value, options)
       ? {valid: false, error: 'VALIDATOR_REQUIRED'}
       : {valid: true}
