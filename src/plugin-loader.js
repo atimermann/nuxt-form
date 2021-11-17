@@ -10,6 +10,13 @@
 import NuxtForm from './nuxt-form'
 import path from 'path'
 
+/////////////////////////////////////////////////
+// Dependência dos fields
+/////////////////////////////////////////////////
+import DatetimePicker from 'vuetify-datetime-picker'
+
+
+/////////////////////////////////////////////////
 const fields = require.context('./fields/', false, /\.vue$/)
 
 // Importação Dinamica de todos os modulos de um diretório
@@ -23,8 +30,19 @@ fields.keys().forEach((resolve, keys, id) => {
 
 export default function (Vue, options) {
 
-  NuxtForm.mixins.push({options})
+  /////////////////////////////////////////////////
+  // Dependência dos fields
+  /////////////////////////////////////////////////
 
+  //////// nv-date-time-picker //////////
+  // (Optional) import 'vuetify-datetime-picker/src/stylus/main.styl'
+  Vue.use(DatetimePicker)
+
+  /////////////////////////////////////////////////
+  // Nuxta Form
+  /////////////////////////////////////////////////
+
+  NuxtForm.mixins.push({options})
   Vue.component('nuxtForm', NuxtForm)
 
   // Carrega automaticamente todos os fields e declara no vue

@@ -33,7 +33,8 @@
   },
   "dependencies": {
     "lodash": "^4.17.21",
-    "validator": "^13.5.2"
+    "validator": "^13.5.2",
+    "vuetify-datetime-picker": "^2.1.1"
   },
   "files": [
     "src/",

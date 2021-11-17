@@ -138,7 +138,7 @@ export default {
 
       // Sincroniza sempre que ocorrer uma alteração
       this.value.onChange((attr, value) => {
-        console.log('Change', attr, value)
+        // TODO: Ativar no modo DEBUG console.log('Change', attr, value)
         this._syncFieldsWithFormModel()
       })
 
@@ -248,7 +248,7 @@ export default {
     async validate(fieldsName = this.fieldsName, validatedFields = []) {
       // valida sempre que perguntar e o modo de validação for no submit
 
-      console.log('VALIDANDO', fieldsName)
+      // TODO: Ativar no modo DEBUG  console.log('VALIDANDO', fieldsName)
       for (const fieldName of fieldsName) {
         await this.fieldsComponentIndex[fieldName].validate(validatedFields)
       }
@@ -475,7 +475,7 @@ export default {
      */
     _setObjectAttribute(object, attrName, value) {
 
-      console.log('_setObjectAttribute', object, attrName, value)
+      // TODO: Ativar no modo DEBUG  console.log('_setObjectAttribute', object, attrName, value)
 
       if (value === undefined) value = null
 
@@ -508,7 +508,7 @@ export default {
      */
     _syncFieldsWithFormModel() {
 
-      console.log('Sincronizando...')
+      // TODO: Ativar no modo DEBUG  console.log('Sincronizando...')
       for (const fieldName of this.fieldsName) {
         this.fieldsComponentIndex[fieldName].setValue(get(this.model, fieldName))
       }

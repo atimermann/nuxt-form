@@ -49,7 +49,7 @@ export default {
      * no modo standalone, quando para o nuxt-form, (o evento é tratado no nuxt-form)
      */
     fModel(value) {
-      console.log('fModel', this.fieldName, value)
+      // TODO: Ativar no modo DEBUG console.log('fModel', this.fieldName, value)
       this.$emit('input', value)
     },
     /**
