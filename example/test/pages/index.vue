@@ -12,7 +12,7 @@
         v-model="standalone"
     />
     <h2>Teste FORM</h2>
-    <nuxt-form :schema="schema" v-model="formData" ref="form">
+    <nuxt-form :schema="schema" v-model="formData" ref="form" @submit="onSubmit">
       <template #Name3>
         <nv-text-field
             field-name="Name3"
@@ -180,6 +180,12 @@ export default {
   },
 
   methods: {
+
+    onSubmit(isValid, model) {
+
+      console.log('VALUES=', this.$refs.form.getValues())
+
+    },
 
     change() {
 

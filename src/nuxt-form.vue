@@ -71,7 +71,18 @@ export default {
      *
      * @type {boolean}
      */
-    disableFieldsUpdateByVModel: true
+    disableFieldsUpdateByVModel: {
+      type: Boolean,
+      default: true
+    },
+
+    /**
+     *  Ao carregador valores dos campos ou ao submeter formuláriop, atributos com valor null são removidos do resultado final.
+     */
+    cleanNullValuesOnSubmit: {
+      type: Boolean,
+      default: true
+    }
 
   },
 
@@ -234,7 +245,38 @@ export default {
      */
     async submit() {
       await this.validate()
-      this.$emit('submit', this.isValid(), this.model, this.fieldsComponentIndex)
+      this.$emit('submit', this.isValid(), this.getValues(), this.fieldsComponentIndex)
+    },
+
+    /**
+     *  Retorna todos os valores do formulário (this.model) com alguns filtros e tratamento.
+     *
+     * @param model   Usado internamente, transpassa o objeto recursivamente
+     *
+     * @return {{}} Valores tratados
+     */
+    getValues(model) {
+
+      model = model === undefined
+          ? cloneDeep(this.model)
+          : model
+
+      const result = {}
+      for (const [attribute, value] of Object.entries(model)) {
+
+        // Remove campos cujo valor é null ou undefined
+        if ((value === null || value === undefined) && this.cleanNullValuesOnSubmit) {
+          continue
+        }
+
+        if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+          result[attribute] = this.getValues(value)
+        } else {
+          result[attribute] = value
+        }
+      }
+
+      return result
     },
 
 

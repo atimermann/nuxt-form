@@ -771,7 +771,15 @@ manualmente,explicar como
 
 Table Editor: https://www.tablesgenerator.com/markdown_tables
 
-## TODO: Props
+## Props
+
+| Prop                        | Tipo                             | Padrão   | Descrição                                                                                                                                                                                                                                                                                                                                               |
+|-----------------------------|----------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| schema                      | Array                            | []       | Descreve os campos do formulário (formato json) mapeia campo com dado.                                                                                                                                                                                                                                                                                  |
+| value                       | Object \|\| InstanceOf NuxtModel | {}       | Representa os dados de todos os campos do formulário, obrigatório ser objeto ou instancia de nuxt-model                                                                                                                                                                                                                                                 |
+| validationMode              | String                           | onChange | Modo de validação onChange, onBlur, onBlurOrInvalid, onSubmit, onSubmitOrInvalid                                                                                                                                                                                                                                                                        |
+| disableFieldsUpdateByVModel | Boolean                          | true     | Por padrão ao alterar valor de v-model, todos os campos tem seus valores sincronizados com model do formulário  Porém, isto causa um efeito colateral, sempre que um campo altera seu valor,  todo  formulário é atualizado novamente, podendo causar lentidão em formulários muito grande.  Utilize esta opção para melhorar performance nesses casos. |
+| cleanNullValuesOnSubmit     | Boolean                          | true     | Ao carregador valores dos campos ou ao submeter formuláriop, atributos com valor null são removidos do resultado final.                                                                                                                                                                                                                                 |
 
 ## TODO: Eventos
 
