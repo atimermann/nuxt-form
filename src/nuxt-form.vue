@@ -23,10 +23,10 @@
 
 <script>
 
-import {cloneDeep, defaults, get, isEqual, toNumber} from 'lodash'
+import { cloneDeep, defaults, get, isEqual, isPlainObject, toNumber } from 'lodash'
 
 export default {
-  name: "nuxt-form",
+  name: 'nuxt-form',
 
   props: {
     /**
@@ -43,7 +43,7 @@ export default {
       default() {
         return {}
       },
-      validator: function (value) {
+      validator: function(value) {
         return typeof value === 'object'
       }
     },
@@ -269,11 +269,13 @@ export default {
           continue
         }
 
-        if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-          result[attribute] = this.getValues(value)
-        } else {
-          result[attribute] = value
+        if (isPlainObject(value)) {
+          value = this.getValues(value)
+          if (Object.keys(value).length === 0 && this.cleanNullValuesOnSubmit) continue
         }
+
+        result[attribute] = value
+
       }
 
       return result
