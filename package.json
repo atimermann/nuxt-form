@@ -34,6 +34,7 @@
   "dependencies": {
     "lodash": "^4.17.21",
     "validator": "^13.5.2",
+    "vue-currency-input": "^1.18.4",
     "vuetify-datetime-picker": "^2.1.1"
   },
   "files": [

@@ -24,30 +24,38 @@
           field-name="Name2"
       />
 
-      <v-card class="pa-3 mb-3">
+      <v-card class="pa-3 mb-3"  color="teal lighten-4">
         <h3>Sub Externo</h3>
         <nv-text-field
             field-name="SubExterno"
         />
       </v-card>
 
-      <v-card class="pa-3 mb-3">
+      <v-card class="pa-3 mb-3" color="red lighten-4">
         <h3>Externo3</h3>
         <nv-text-field
             field-name="externo3"
         />
       </v-card>
 
-      <v-card class="pa-3">
+      <v-card class="pa-3" color="green lighten-4">
         <h3>DateTimePicker</h3>
         <nv-datetime-picker-field
             field-name="dateTime"
             label="Data e Hora"
             :validators="['required']"
         >
-
         </nv-datetime-picker-field>
         VALUE= {{ formData.dateTime }}
+      </v-card>
+
+      <v-card class="pa-3 mt-3" color="blue lighten-4">
+        <h3>Currency</h3>
+        <nv-currency-field
+            field-name="currency"
+        />
+        <p>VALUE= {{ formData.currency }}</p>
+        <p>TYPE {{ typeof formData.currency }}</p>
       </v-card>
 
       <v-btn class="mt-3" @click="$refs.form.submit()">SUBMIT</v-btn>

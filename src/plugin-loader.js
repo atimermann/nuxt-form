@@ -14,7 +14,7 @@ import path from 'path'
 // Dependência dos fields
 /////////////////////////////////////////////////
 import DatetimePicker from 'vuetify-datetime-picker'
-
+import VueCurrencyInput from 'vue-currency-input'
 
 /////////////////////////////////////////////////
 const fields = require.context('./fields/', false, /\.vue$/)
@@ -30,6 +30,7 @@ fields.keys().forEach((resolve, keys, id) => {
 
 export default function (Vue, options) {
 
+
   /////////////////////////////////////////////////
   // Dependência dos fields
   /////////////////////////////////////////////////
@@ -37,6 +38,8 @@ export default function (Vue, options) {
   //////// nv-date-time-picker //////////
   // (Optional) import 'vuetify-datetime-picker/src/stylus/main.styl'
   Vue.use(DatetimePicker)
+  // nv-currency
+  Vue.use(VueCurrencyInput)
 
   /////////////////////////////////////////////////
   // Nuxta Form
