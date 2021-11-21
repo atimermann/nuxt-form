@@ -23,7 +23,7 @@
 
 <script>
 
-import { cloneDeep, defaults, get, isEqual, isPlainObject, toNumber } from 'lodash'
+import {cloneDeep, defaults, get, isEqual, isPlainObject, toNumber} from 'lodash'
 
 export default {
   name: 'nuxt-form',
@@ -43,7 +43,7 @@ export default {
       default() {
         return {}
       },
-      validator: function(value) {
+      validator: function (value) {
         return typeof value === 'object'
       }
     },
@@ -523,7 +523,7 @@ export default {
 
       if (value === undefined) value = null
 
-      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+      if (isPlainObject(value)) {
 
         // Cria novo subobjeto no objeto caso não exista
         if (object[attrName] === undefined) {
@@ -557,7 +557,6 @@ export default {
         this.fieldsComponentIndex[fieldName].setValue(get(this.model, fieldName))
       }
     }
-
 
   }
 }

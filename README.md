@@ -783,15 +783,30 @@ Table Editor: https://www.tablesgenerator.com/markdown_tables
 
 ## TODO: Eventos
 
-## Métodos
 
-### clearErrors
+***
+
+# Métodos
+
+Métodos para manipulação do formulário, pode ser acessado com $refs
+
+Exemplo:
+```javascript
+
+mounted() {
+  this.$refs.form.setValues({name: 'André'})
+}
+```
+
+**ATENÇÃO:** No vuefile, é os métodos só podem ser chamados depois da renderização do formulário, ou seja, não irá funcionar no lifecycle hooks beforeCreated, creted ou beforeMount
+
+## clearErrors
 
 Limpa todas as mensagens de erros customizados no campo e erros definidos globalmente
 
 **IMPORTANTE:** Não limpa erros de validações internas (ex: required)
 
-### isValid
+## isValid
 
 Verifica se o formulário é válido
 
@@ -800,7 +815,7 @@ submit" ou "onSubmit" será necessário executado o método "validate()" antes.
 
 **Retorno** (boolean) Se formulário está válido ou não
 
-### setErrors
+## setErrors
 
 Atribui mensagens de erros globais, limpa mensagens de erros antigos.
 
@@ -808,7 +823,7 @@ Atribui mensagens de erros globais, limpa mensagens de erros antigos.
 |-----------|--------------------------------|----------|
 | errors    | Lista de mensagens de erro     | String[] |
 
-### addErrors
+## addErrors
 
 Adiciona uma menagem de erros global, adiciona um erro sem limpar erros atigos
 
@@ -816,7 +831,7 @@ Adiciona uma menagem de erros global, adiciona um erro sem limpar erros atigos
 |-----------|-----------------------|--------|
 | errors    | Mensagem de erro      | String |
 
-### setValues
+## setValues
 
 Atribui valores aos campos do formulário (model). Só altera os campos definidos em "values" ao contrário de alterar
 v-model que limpa os valores de todos os campos antes de atrabituir (substitui).
@@ -827,7 +842,7 @@ v-model que limpa os valores de todos os campos antes de atrabituir (substitui).
 
 **Retorno:** void
 
-### submit
+## submit
 
 Utilizado quando se deseja submeter os dados do formulário, esta operação, executa validação completa e disapara o
 evento "submit"
@@ -835,7 +850,7 @@ evento "submit"
 Por exemplo, ao submeter o formulário para o backend, execute o metodo submit() e no evento submit, verificamos
 validação dos campos, realizamos validações extras.
 
-### (async) validate
+## (async) validate
 
 Executa validação do formulário
 
@@ -846,14 +861,14 @@ Executa validação do formulário
 
 **Retorno:** void (Utilize o método "isValid", para saber se o formulário está válido)
 
-## Métodos de Campos
+# Métodos de Campos
 
 Para ter acesso a estes métodos. necessário te a lista de componentes do formulário, isso pode ser feito através do
 evento "submit".
 
 Veja mais detalhes no evento submit
 
-### setErrors
+## setErrors
 
 Define todas as mensagens de erro customizada para este campo. Erros de validações internas são mescladas com esta
 lista. Usado principalmente em conjunto com o evento "submit" para criar validações customizadas ou criar mensagem de
