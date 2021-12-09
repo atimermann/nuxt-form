@@ -92,10 +92,12 @@ export default {
 
     setValue(value) {
 
+      this.fModel = value
+
       if (this.internalTimezone) {
         if (value instanceof Date) {
           // Define o timezone especificado
-          const datetime = DateTime.fromObject(value, {zone: this.internalTimezone})
+          const datetime = DateTime.fromJSDate(value, {zone: this.internalTimezone})
           this.internalDate = new Date(datetime.year, datetime.month - 1, datetime.day, datetime.hour, datetime.minute, datetime.second)
         }
       } else {

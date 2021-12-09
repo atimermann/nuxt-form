@@ -40,7 +40,7 @@
         />
       </v-card>
 
-      <v-card class="pa-3" color="green lighten-4">
+      <v-card class="pa-3 mb-3" color="green lighten-4">
         <h3>DateTimePicker</h3>
         <nv-datetime-picker-field
           field-name="dateTime"
@@ -55,7 +55,29 @@
           Change Timezone
         </v-btn>
         <p>VALUE= {{ formData.dateTime }}</p>
+        <p>VALUE= {{ timezone }}</p>
         <p>TYPE= {{ Object.prototype.toString.call(formData.dateTime) }}</p>
+      </v-card>
+
+      <v-card class="pa-3 mb-3" color="green lighten-4">
+        <h3>DateField</h3>
+        <nv-date-field
+          field-name="datefield"
+          label="Data e Hora"
+          :timezone="timezone"
+          :validators="['required']"
+        />
+        <v-btn @click="change">
+          Change
+        </v-btn>
+        <v-btn @click="timezone = 'Africa/Abidjan'">
+          Change Timezone Africa/Abidjan + 04:00
+        </v-btn>
+        <v-btn @click="timezone = 'America/Rainy_River'">
+          Change Timezone America/Rainy_River -07:00
+        </v-btn>
+        <p>VALUE= {{ formData.datefield }}</p>
+        <p>TYPE= {{ Object.prototype.toString.call(formData.datefield) }}</p>
       </v-card>
 
       <!--      <v-card class="pa-3 mt-3" color="blue lighten-4">-->
@@ -79,8 +101,6 @@
 export default {
 
   data () {
-    console.log('DATA')
-
     return {
       timezone: 'America/New_York',
       standalone: 'stand_alone',
@@ -197,6 +217,7 @@ export default {
     change () {
       this.formData = {
         dateTime: new Date(),
+        datefield: new Date(2022, 0, 1, 23, 59, 59),
         personal: {
           name: Math.random().toString()
         }
