@@ -89,6 +89,14 @@
         <p>VALUE= {{ formData.selectImage }}</p>
       </v-card>
 
+      <v-card class="pa-3 mb-3" color="green lighten-4">
+        <h3>Vue Phone Input</h3>
+        <nv-phone-number-field
+          field-name="phone"
+        />
+        <p>VALUE= {{ formData.phone }}</p>
+      </v-card>
+
       <!--      <v-card class="pa-3 mt-3" color="blue lighten-4">-->
       <!--        <h3>Currency</h3>-->
       <!--        <nv-currency-field-->

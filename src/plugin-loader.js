@@ -13,8 +13,15 @@ import path from 'path'
 /////////////////////////////////////////////////
 // Dependência dos fields
 /////////////////////////////////////////////////
+// Vuetiy Datetime Picker
 import DatetimePicker from 'vuetify-datetime-picker'
+
+// Vue Curremcy Input
 import VueCurrencyInput from 'vue-currency-input'
+
+// VuePhoneNumberInput - TODO: alterar CSS para ficar parecido com o material (vuetify)
+import VuePhoneNumberInput from 'vue-phone-number-input'
+import 'vue-phone-number-input/dist/vue-phone-number-input.css'
 
 /////////////////////////////////////////////////
 const fields = require.context('./fields/', false, /\.vue$/)
@@ -35,11 +42,16 @@ export default function (Vue, options) {
   // Dependência dos fields
   /////////////////////////////////////////////////
 
-  //////// nv-date-time-picker //////////
+  // Vuetiy Datetime Picker
   // (Optional) import 'vuetify-datetime-picker/src/stylus/main.styl'
   Vue.use(DatetimePicker)
-  // nv-currency
+
+  // Vue Curremcy Input
   Vue.use(VueCurrencyInput)
+
+  // VuePhoneNumberInput
+  Vue.component('vue-phone-number-input', VuePhoneNumberInput)
+
 
   /////////////////////////////////////////////////
   // Nuxta Form

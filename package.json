@@ -36,6 +36,7 @@
     "luxon": "^2.1.1",
     "validator": "^13.7.0",
     "vue-currency-input": "1.18.4",
+    "vue-phone-number-input": "^1.1.12",
     "vuetify-datetime-picker": "^2.1.1"
   },
   "files": [
