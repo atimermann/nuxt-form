@@ -96,10 +96,10 @@ export default {
 * Os valores de todos os campos são acessados via "v-model" que é um atributo bidirecional.
 * Veja que definimos valores iniciais para o campo "name"
 
-Podemos alterar os valores do formulário posteriormente (por exemplo depois de uma consulta) há qualquer momento, para
+Podemos alterar os valores do formulário posteriormente (por exemplo, depois de uma consulta) há qualquer momento, para
 isto basta alterar "formData" que o formulário será atualizado imediatamente.
 
-**Importante:** Todos os dados do formulários existentes serão perdidos. Para alterar alguns campos, utilize o método
+**Importante:** Todos os dados do formulário existentes serão perdidos. Para alterar alguns campos, utilize o método
 setModel via ref
 
 ## Modo Stand Alone
@@ -128,9 +128,9 @@ export default {
 
 Notas:
 
-* Não é obrigatório definir "field-name" nestes casos
-* utilize v-model para acessar os dados do componente, como seria feito em input padrão do vue.
-* Não há necessidade de utilizar "v-model" em campos quando estiver utilizando nuxt-form (modo completo)
+* Não é obrigatório definir "field-name" nestes casos.
+* Utilize v-model para acessar os dados do componente, como seria feito em input padrão do vue.
+* Não há necessidade de utilizar "v-model" em campos quando utilizar nuxt-form (modo completo).
 
 ## Schemas
 
@@ -340,8 +340,8 @@ export default {
 
 ## Nuxt Model
 
-O Nuxt Form tem integração com o Nuxt Model, podemos passar uma instancia de Model e gerar o form será gerado
-automaticamente à partir desse Model, além de manpilar dados do model.
+O Nuxt Form tem integração com o Nuxt Model, podemos passar uma instância de Model e gerar o form será gerado
+automaticamente a partir desse Model, além de manipular dados do model.
 
 Exemplo de uso:
 

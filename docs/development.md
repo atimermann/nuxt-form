@@ -4,5 +4,7 @@
     * vue
     * @nuxtjs/vuetify (nuxt mesmo? ou só o vuetify
       
-* Lembrar que todo atributo criado no field, é necessário adicionar em 
+* Lembrar que todo o atributo criado no field, é necessário adicionar em 
     * src/nuxt-form.vue => Template => <component />
+
+

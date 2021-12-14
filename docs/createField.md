@@ -72,7 +72,11 @@ Ele é alterado pelo formulário ou no modo stand-alone quando v-model é altera
 
 # Validação Customizada
 
-# Manipulando (filtrando) valores do formulário antes de salvar
+# Técnicas de desenvolvimento de campos (fields)
+
+[[ LISTAR AQUI Técnicas apreendidas]]
+
+## Manipulando (filtrando) valores do formulário antes de salvar
 
 O atributo fModel representa o valor do campo no formulário, geralmente esse valor é mapeado diretamente.
 
@@ -116,3 +120,4 @@ exemplo;
 Importante destacar q o método update é abritrádio, ao contrario do setValue, não é utilizado pelo Formulário, ele deve ser chamado por exemplo no evento onChange
 
 Dica: existem muitas formas de implementar, estude outros campos já existente
+
