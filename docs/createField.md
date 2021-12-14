@@ -70,9 +70,49 @@ Ele é alterado pelo formulário ou no modo stand-alone quando v-model é altera
 
 # Validação
 
-
-
 # Validação Customizada
 
+# Manipulando (filtrando) valores do formulário antes de salvar
 
+O atributo fModel representa o valor do campo no formulário, geralmente esse valor é mapeado diretamente.
 
+Porém, em alguns casos, o valor utilizado internamente no campo precisa ser manipulado antes de ser usado pelo usuário.
+
+Um exemplo, são campos monetários, no campo é exibido o valor com cifrão da moeda enquanto o valor final é um float.
+Neste caso não utilizamos fModel diretamente, aplicamos um filtro ao carregar e ao salvar a informação
+
+Os dados do formulário são passados para o campo através do método setValue, então podemos sobrescrever o método setValue, que na base é escrito assim:
+Exemplo:
+
+```javascript
+ methods: {
+    setValue(value) {
+      this.fModel = value
+    } 
+  },
+```
+
+Ao reeserver o método, devemos manter a atribuição de fModel com valor vindo do formulário, porém podemos atribuir nossa váriavel:
+```javascript
+ methods: {
+    setValue(value) {
+      this.fModel = value
+      this.internalValue = transform(this.fModel)
+    } 
+  },
+```
+
+Depois que o valor é alterado pelo campo podemos, mandar novamente para o formulário simplesmente atribuindo fModel
+exemplo;
+
+```javascript
+ methods: {
+    update(value) {
+      this.fModel = transform(value)      
+    } 
+  },
+```
+
+Importante destacar q o método update é abritrádio, ao contrario do setValue, não é utilizado pelo Formulário, ele deve ser chamado por exemplo no evento onChange
+
+Dica: existem muitas formas de implementar, estude outros campos já existente

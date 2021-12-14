@@ -91,7 +91,7 @@ export default {
 
   methods: {
     setValue(value) {
-      console.log('setValue', value)
+      this.fModel = value
       setCurrencyValue((this.$refs.inputRef).$el.querySelector('input'), value)
     },
     /**
@@ -99,9 +99,6 @@ export default {
      */
     update() {
       this.fModel = parseCurrency(this.formattedValue, this.currencyOptions)
-    },
-    parseCurrency(formattedValue, options) {
-      return parseCurrency(formattedValue, options)
     }
   },
   computed: {
