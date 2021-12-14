@@ -8,7 +8,7 @@
     "dev-link": "npm link @agtm/nuxt-form && nuxt",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
+    "lint:js": "eslint --fix --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint": "npm run lint:js"
   },
   "dependencies": {

@@ -80,6 +80,15 @@
         <p>TYPE= {{ Object.prototype.toString.call(formData.datefield) }}</p>
       </v-card>
 
+      <v-card class="pa-3 mb-3" color="green lighten-4">
+        <h3>Select Image</h3>
+        <nv-select-image-field
+          :items="itemsSelectImage"
+          field-name="selectImage"
+        />
+        <p>VALUE= {{ formData.selectImage }}</p>
+      </v-card>
+
       <!--      <v-card class="pa-3 mt-3" color="blue lighten-4">-->
       <!--        <h3>Currency</h3>-->
       <!--        <nv-currency-field-->
@@ -102,6 +111,23 @@ export default {
 
   data () {
     return {
+      itemsSelectImage: [
+        {
+          text: 'Foo',
+          image: 'https://cheap2ship-website.s3-us-west-2.amazonaws.com/static/images/flags-iso/flat/24/BR.png',
+          value: 1
+        },
+        {
+          text: 'Bar',
+          image: 'https://cheap2ship-website.s3-us-west-2.amazonaws.com/static/images/flags-iso/flat/24/US.png',
+          value: 2
+        },
+        {
+          text: 'Hoo',
+          image: 'https://www.gravatar.com/avatar/b17065ea1655f1e3283aac8d8fc16019?s=48&d=identicon&r=PG',
+          value: 3
+        }
+      ],
       timezone: 'America/New_York',
       standalone: 'stand_alone',
       formData: {

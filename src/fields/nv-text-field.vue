@@ -68,7 +68,6 @@ export default {
   // TODO: Remover ao documentar
   validators: {
     mustBeEmpty(value, model, options) {
-
       value = value || ''
       return !validatorLibrary.isEmpty(value, options)
           ? {valid: true}
