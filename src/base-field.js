@@ -15,6 +15,8 @@ export default {
   props: {
     /**
      * Lista de erros para ser exibido no campo, utilizado para validações customizadas implementado pelo usuário do
+     * Utilizado no modo Stand Alone
+     *
      * nuxt-form
      */
     errors: {
@@ -37,9 +39,14 @@ export default {
        */
       fModel: null,
       /**
-       * Erros passado via prop
+       * Erros customizado definido via prop (Utilizado no modo stand Alone)
        */
-      propsErrors: this.errors
+      propsErrors: this.errors,
+
+      /**
+       * Erros customizado definidos via método (Utilizado por métodos Refs)
+       */
+      methodsErrors: []
 
     }
   },
@@ -88,7 +95,24 @@ export default {
      * @param {string[]} errors
      */
     setErrors(errors) {
-      this.propsErrors = errors
+      this.methodsErrors = errors
+    },
+
+    /**
+     * Adiciona novo erro ao field (externamente via método)
+     * @param errorDescription
+     */
+    addError(errorDescription) {
+      this.methodsErrors.push(errorDescription)
+    },
+
+    /**
+     * Limpa erros customizados (definidos via prop error ou métodos setError/addError
+     * Erros de validação não são limpos pois é gerado pelo próprio form internamente
+     */
+    clearErrors() {
+      this.methodsErrors = []
+      this.propsErrors = []
     }
   },
   computed: {
@@ -110,6 +134,7 @@ export default {
     fErrors() {
       return [].concat(
         this.propsErrors,
+        this.methodsErrors,
         this.validation.errors
       )
     }

@@ -717,7 +717,8 @@ export default {
 
         if (error) {
           // Mensagem de erro em um campo
-          fields.fieldA.setErrors('Campo inválido')
+          fields.fieldA.setErrors(['Campo inválido'])
+          fields.fieldA.addError('Campo inválido')
 
           // Mensagem de erro global
           this.$refs.form.addError('Este formulário tem um problema')

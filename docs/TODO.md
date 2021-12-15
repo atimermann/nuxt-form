@@ -5,3 +5,7 @@
 - Existe uma confusão entre validação global e validação externa do campo (revisar doc e cód)
 - Criar Tipos para $ref.form 
 - documentar todos os campos implementados internamente com lista de validalções internas e atributos
+- Atualizar documentação com novos métodos de campo (setError, addError e clearErrors com exemplo de uso) e mudanças na forma de manipular campos
+- Documentar q agora tem 3 tipos de erros no campo: Validação interna, Props e por métodos (alem dos erros genericos sem campo associado)
+- Renomear em doc e código globalErrors para genericErrors
+- Documentar novo método getField para acessar fieds programaticamente 

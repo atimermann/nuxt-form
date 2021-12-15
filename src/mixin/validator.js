@@ -155,7 +155,7 @@ export default {
         if (!valid) invalid = true
         if (!valid) errors.push({error, errorValues})
 
-        // Reqyuisita validação de outro campo
+        // Requisita validação de outro campo
         if (validate && !validatedFields.includes(validate)) otherFieldsValidate.push(validate)
       }
 

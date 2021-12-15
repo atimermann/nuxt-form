@@ -322,28 +322,39 @@ export default {
      *
      */
     clearErrors() {
+
       for (const fieldName of this.fieldsName) {
-        this.fieldsComponentIndex[fieldName].setErrors([])
+        this.fieldsComponentIndex[fieldName].clearErrors()
       }
       this.globalErrors = []
     },
 
     /**
-     * Define erros globais (Limpa antigos)
+     * Define todos os erros genericos (Limpa antigos)
      *
-     * @param {string[]} errors
+     * @param {string[]} errors Lista de erros genéricos
      */
     setErrors(errors) {
       this.globalErrors = errors
     },
 
     /**
-     * Adiciona um erro Global
+     * Adiciona um erro genérico
      *
      * @param {string} error
      */
     addError(error) {
       this.globalErrors.push(error)
+    },
+
+    /**
+     * Retorna uma instancia de um field especifico
+     *
+     * @param fieldName
+
+     */
+    getField(fieldName) {
+      return this.fieldsComponentIndex[fieldName]
     },
 
     /**
