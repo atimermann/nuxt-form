@@ -6,9 +6,9 @@
   "main": "src/nuxt-form.vue",
   "scripts": {
     "build": "npx tsc",
-    "publish-patch": "npm run build && npm version patch && npm publish --access public",
-    "publish-minor": "npm run build && npm version minor && npm publish --access public",
-    "publish-major": "npm run build && npm version major && npm publish --access public",
+    "publish-patch": "npm run build && npm version patch && npm publish --access public && git push",
+    "publish-minor": "npm run build && npm version minor && npm publish --access public && git push",
+    "publish-major": "npm run build && npm version major && npm publish --access public && git push",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

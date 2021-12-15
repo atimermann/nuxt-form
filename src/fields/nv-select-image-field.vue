@@ -1,9 +1,11 @@
 <template>
   <div class="pb-3">
+    <!--  reverse: Atributo com problema se passar com v-bind  -->
     <v-select
         v-model="fModel"
         v-bind="$props"
         :error="!!fErrors.length"
+        :reverse="reverse?true:false"
         @change="touch"
         @blur="blur"
     >
