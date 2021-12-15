@@ -132,6 +132,10 @@ Notas:
 * Utilize v-model para acessar os dados do componente, como seria feito em input padrão do vue.
 * Não há necessidade de utilizar "v-model" em campos quando utilizar nuxt-form (modo completo).
 
+
+TODO: Set error em modo stand alone???,
+TODO: validação em modo stand alone???
+
 ## Schemas
 
 Existem três modos de criar campos no "nuxt-form": via schema, slots ou nuxt-model.
@@ -823,7 +827,7 @@ Atribui mensagens de erros globais, limpa mensagens de erros antigos.
 |-----------|--------------------------------|----------|
 | errors    | Lista de mensagens de erro     | String[] |
 
-## addErrors
+## addError
 
 Adiciona uma menagem de erros global, adiciona um erro sem limpar erros atigos
 

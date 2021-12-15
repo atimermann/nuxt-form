@@ -130,8 +130,19 @@ export default {
 
       validatedFields.push(this.fieldName)
 
+      /**
+       * Uma cópia do model do form, ou seja podemos acessar valores de qualquer outro campo.
+       * Exemplo: verificar se a senha preenchida pelo usuário em outro campo é idêntico a este
+       *
+       * No Modo StandAlone é null
+       *
+       * @type {*|null}
+       */
+      const formModel = this.form ? cloneDeep(this.form.model) : null
+
       let invalid = false
       let errors = []
+
       /**
        * Lista de outros campos que precisam ser validado (exemplo: verificação de senha)
        * não funciona modo standalone
@@ -152,7 +163,7 @@ export default {
       for (const validator of this.validation.validatorsList) {
 
         if (isFunction(validator)) {
-          processaValidationResult(await validator(this.fModel, cloneDeep(this.form.model)))
+          processaValidationResult(await validator(this.fModel, formModel))
         } else {
 
           let validatorName = undefined
@@ -170,16 +181,17 @@ export default {
             // passar this.form.model para um metodo em this.$options causa efeito colateral no objeto,  manter
             // clonedeep para formar passagem de parametro por cópia (objeto por patrão é passado por referencia)
             // evitando assim que model sejá alterado
-            processaValidationResult(await this.$options.validators[validatorName](this.fModel, cloneDeep(this.form.model), validatorOptions))
+            processaValidationResult(await this.$options.validators[validatorName].call(this, this.fModel, formModel, validatorOptions))
 
           } else if (internalValidators[validatorName]) {
-            processaValidationResult(await internalValidators[validatorName](this.fModel, cloneDeep(this.form.model), validatorOptions))
+            processaValidationResult(await internalValidators[validatorName].call(this, this.fModel, formModel, validatorOptions))
 
           } else {
             throw new Error(`Validation "${validatorName}" not found`)
           }
         }
       }
+
       // Atualiza no final, para agaurdar as validações assincronas
       this.validation.invalid = invalid
 
@@ -198,9 +210,18 @@ export default {
       }
 
       if (otherFieldsValidate.length > 0) {
+
+        if (!form) {
+          throw new Error('it is not possible to validate another field in stand alone mode')
+        }
+
         this.form.validate(otherFieldsValidate, validatedFields)
       }
 
+    },
+
+    isValid() {
+      return !this.validation.invalid
     }
 
   },

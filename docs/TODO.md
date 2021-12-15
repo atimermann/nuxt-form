@@ -1,1 +1,7 @@
 - modo debug
+- documentar adicionar metodo de campo validate()
+- documentar Adicionar metodo de campo isValid
+- exemplificar como usar métodos de campo no modo stand alone
+- Existe uma confusão entre validação global e validação externa do campo (revisar doc e cód)
+- Criar Tipos para $ref.form 
+- documentar todos os campos implementados internamente com lista de validalções internas e atributos

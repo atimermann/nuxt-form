@@ -14,7 +14,7 @@ import validatorLibrary from 'validator'
 
 export default {
 
-  required(value, model, options) {
+  required(value, formModel, options) {
 
     //TODO: value ||= '' incompativel com nuxt, aguardar e alterar quando atualizar
     if (value === undefined || value === null) {
@@ -32,7 +32,7 @@ export default {
    * Ex: campos de senha
    *
    */
-  equal(value, model, options) {
+  equal(value, formModel, options) {
 
     const valueA = value || ''
     const valueB = model[options.field] || ''

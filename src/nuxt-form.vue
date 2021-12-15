@@ -307,7 +307,7 @@ export default {
       let valid = true
       for (const fieldName of this.fieldsName) {
 
-        if (this.fieldsComponentIndex[fieldName].validation.invalid) {
+        if (!this.fieldsComponentIndex[fieldName].isValid()) {
           valid = false
           break
         }
@@ -342,7 +342,7 @@ export default {
      *
      * @param {string} error
      */
-    addErrors(error) {
+    addError(error) {
       this.globalErrors.push(error)
     },
 

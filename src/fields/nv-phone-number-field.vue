@@ -1,13 +1,12 @@
 <template>
-  <div class="pb-3">
-
+  <div className="pb-3">
     <vue-phone-number-input
-        v-model="fModel"
+        v-model="vuePhoneNumberInputModel"
         :error="!!fErrors.length"
         v-bind="$props"
         :translations='translations'
         @phone-number-blur="blur"
-        @update="touch"
+        @update="update"
     />
     <error-message :errors="fErrors"/>
   </div>
@@ -18,6 +17,9 @@
  *
  * TODO: Mudar css para ficar igual vuetify (Material design)
  *
+ * Validação interna:
+ *  phone
+ *
  */
 import BaseField from '@agtm/nuxt-form/src/base-field'
 import ErrorMessage from '@agtm/nuxt-form/src/error-message'
@@ -27,9 +29,15 @@ export default {
   components: {ErrorMessage},
   extends: BaseField,
 
+
   data() {
 
     return {
+      vuePhoneNumberInputModel: '',
+      /**
+       * Usado pelo validador       *
+       */
+      isValidPhoneNumber: false,
       // TODO: Criar computed q retorna tradução  baseada no vue-i18n do nuxt
       translations: {
         countrySelectorLabel: 'Código do país',
@@ -64,9 +72,34 @@ export default {
     'border-radius',
     'show-code-on-list',
     'no-example'
-  ]
+  ],
+
+  methods: {
+    setValue(value) {
+
+      // BUGFIX, só funciona se mandar pra fila do eventLoop
+      this.$nextTick(() => {
+        this.fModel = value
+        this.vuePhoneNumberInputModel = this.fModel
+
+      })
+    },
+
+    update(data) {
+      this.fModel = data.formatInternational
+      this.isValidPhoneNumber = data.isValid
+      this.touch()
+    }
+  },
+
+  validators: {
+    phone(value, model, options) {
+      return this.isValidPhoneNumber
+          ? {valid: true}
+          : {valid: false, error: 'VALIDATOR_INVALID_PHONE_NUMBER'}
+
+
+    }
+  }
 }
 </script>
-
-
-
