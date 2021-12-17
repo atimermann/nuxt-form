@@ -59,7 +59,7 @@ export default {
     'only-countries',
     'no-validator-state',
     'no-flags',
-    // 'disabled',
+    'disabled',
     'dark',
     'dark-color',
     // 'required',

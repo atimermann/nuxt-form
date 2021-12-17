@@ -8,3 +8,5 @@
     * src/nuxt-form.vue => Template => <component />
 
 
+* Quando possível implementar métodos tanto no formulário quanto nos campos. 
+  * Exemplo: Método para limpar dados do formulário, criar método clean no baseField e no form, quando executar no form chama clean dos fields

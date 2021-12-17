@@ -56,6 +56,7 @@ export default {
     filled: Boolean,
     flat: Boolean,
     fullWidth: Boolean,
+    disabled: Boolean,
     label: String,
     outlined: Boolean,
     placeholder: String,

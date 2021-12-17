@@ -40,6 +40,7 @@ export default {
     prefix: String,
     prependInnerIcon: String,
     reverse: Boolean,
+    disabled: Boolean,
     rounded: Boolean,
     shaped: Boolean,
     singleLine: Boolean,

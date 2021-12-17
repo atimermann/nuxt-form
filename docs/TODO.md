@@ -9,3 +9,5 @@
 - Documentar q agora tem 3 tipos de erros no campo: Validação interna, Props e por métodos (alem dos erros genericos sem campo associado)
 - Renomear em doc e código globalErrors para genericErrors
 - Documentar novo método getField para acessar fieds programaticamente 
+- Definir tipo para Typescript nos comentarios talvez no arquivo .ts 
+- Implementar clean form e clean field

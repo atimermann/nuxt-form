@@ -79,7 +79,9 @@ export default {
      * Define o timezone do campo (em vez de utilizar timezone do navagador), deve estar no formato
      * ex: America/New_York
      */
-    timezone: String
+    timezone: String,
+
+    disabled: Boolean
   },
 
   data() {

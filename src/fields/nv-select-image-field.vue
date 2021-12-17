@@ -49,7 +49,7 @@ export default {
     'deletable-chips',
     'dense',
     'disable-lookup',
-    //TODO: Usado internamento pelo form. analisar: 'disabled',
+    'disabled',
     'eager',
     'filled',
     'flat',
