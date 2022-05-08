@@ -3,6 +3,7 @@
     <v-text-field
         v-model="fModel"
         v-bind="$props"
+        v-on="$listeners"
         :error="!!fErrors.length"
         @keydown="touch"
         @blur="blur"

@@ -24,6 +24,7 @@ Dentro do projeto criamos o componente em qualquer local e importamos
     <v-text-field
         v-model="fModel"
         v-bind="$props"
+        v-on="$listeners"
         :error="!!fErrors.length"
         @keydown="touch"
         @blur="blur"
@@ -76,6 +77,22 @@ Ele é alterado pelo formulário ou no modo stand-alone quando v-model é altera
 
 [[ LISTAR AQUI Técnicas apreendidas]]
 
+
+## Bypass listeners e props 
+
+Quando implementamos um novo campo é comum usarmos outros componentes já pronto como v-text-field, podemos repassar
+todos os eventos e props com:
+
+```
+  v-on="$listeners"
+```
+e
+```
+  v-bind="$props"
+```
+
+**NOTA:** Usar com atenção, podem haver efeitos colaterais
+
 ## Manipulando (filtrando) valores do formulário antes de salvar
 
 O atributo fModel representa o valor do campo no formulário, geralmente esse valor é mapeado diretamente.
@@ -96,7 +113,7 @@ Exemplo:
   },
 ```
 
-Ao reeserver o método, devemos manter a atribuição de fModel com valor vindo do formulário, porém podemos atribuir nossa váriavel:
+Ao reeserver o método, devemos manter a atribuição de fModel com valor vindo do formulário, porém podemos atribuir a nossa váriavel:
 ```javascript
  methods: {
     setValue(value) {

@@ -5,6 +5,7 @@
         v-model="formattedValue"
         v-currency="currencyOptions"
         v-bind="$props"
+        v-on="$listeners"
         :error="!!fErrors.length"
         @keydown="touch"
         @blur="blur"

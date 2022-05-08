@@ -4,6 +4,7 @@
     <v-select
         v-model="fModel"
         v-bind="$props"
+        v-on="$listeners"
         :error="!!fErrors.length"
         :reverse="reverse?true:false"
         @change="touch"

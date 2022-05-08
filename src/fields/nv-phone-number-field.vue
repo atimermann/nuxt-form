@@ -4,6 +4,7 @@
         v-model="vuePhoneNumberInputModel"
         :error="!!fErrors.length"
         v-bind="$props"
+        v-on="$listeners"
         :translations='translations'
         @phone-number-blur="blur"
         @update="update"
