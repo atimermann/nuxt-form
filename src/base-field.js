@@ -14,6 +14,10 @@ export default {
   mixins: [Debugger, Validator],
   props: {
     /**
+     * Habilita v-model
+     */
+    value: {},
+    /**
      * Lista de erros para ser exibido no campo, utilizado para validações customizadas implementado pelo usuário do
      * Utilizado no modo Stand Alone
      *
@@ -52,6 +56,13 @@ export default {
   },
   watch: {
     /**
+     * Usado no modo standalone, define valor neste field
+     * @param value
+     */
+    value(value) {
+      this.setValue(value)
+    },
+    /**
      * Toda vez que o campo alterar valor de fModel é disparado um evento com a alteração, tanto para o vModel
      * no modo standalone, quando para o nuxt-form, (o evento é tratado no nuxt-form)
      */
@@ -81,7 +92,7 @@ export default {
       this.validation.mode = form.validationMode
     },
     /**
-     * Usado pelo nuxtForm para setar um valor neste field
+     * Usado no modo standalone, define valor neste field
      * (Usado internamente) altera v-model para alterar o valor deste campo
      *
      * @param value
