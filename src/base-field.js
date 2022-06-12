@@ -54,6 +54,9 @@ export default {
 
     }
   },
+  mounted() {
+    this.setValue(this.value)
+  },
   watch: {
     /**
      * Usado no modo standalone, define valor neste field
