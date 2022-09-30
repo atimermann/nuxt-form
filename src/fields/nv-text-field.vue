@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-3">
+  <div>
     <v-text-field
         v-model="fModel"
         v-bind="$props"

@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-3">
+  <div>
     <v-text-field
         ref="inputRef"
         v-model="formattedValue"

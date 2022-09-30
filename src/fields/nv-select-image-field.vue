@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-3">
+  <div>
     <!--  reverse: Atributo com problema se passar com v-bind  -->
     <v-select
         v-model="fModel"

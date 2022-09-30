@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-3">
+  <div>
     <v-datetime-picker
         v-model="internalDate"
         @blur="blur"

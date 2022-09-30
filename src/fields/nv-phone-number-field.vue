@@ -1,5 +1,5 @@
 <template>
-  <div className="pb-3">
+  <div>
     <vue-phone-number-input
         v-model="vuePhoneNumberInputModel"
         :error="!!fErrors.length"
