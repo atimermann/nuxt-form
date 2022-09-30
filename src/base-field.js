@@ -25,12 +25,12 @@ export default {
      */
     errors: {
       type: Array,
-      default() {
+      default () {
         return []
       }
     }
   },
-  data() {
+  data () {
     return {
       /**
        * Refêrencia ao form pai (null quando standalone)
@@ -54,7 +54,7 @@ export default {
 
     }
   },
-  mounted() {
+  mounted () {
     this.setValue(this.value)
   },
   watch: {
@@ -62,14 +62,14 @@ export default {
      * Usado no modo standalone, define valor neste field
      * @param value
      */
-    value(value) {
+    value (value) {
       this.setValue(value)
     },
     /**
      * Toda vez que o campo alterar valor de fModel é disparado um evento com a alteração, tanto para o vModel
      * no modo standalone, quando para o nuxt-form, (o evento é tratado no nuxt-form)
      */
-    fModel(value) {
+    fModel (value) {
       // TODO: Ativar no modo DEBUG console.log('fModel', this.fieldName, value)
       this.$emit('input', value)
     },
@@ -77,7 +77,7 @@ export default {
      * Atualiza lista de erros se atualizar na prop
      * @param value
      */
-    errors(value) {
+    errors (value) {
       this.propsErrors = value
     }
   },
@@ -90,7 +90,7 @@ export default {
      * @param form
      * @private
      */
-    setForm(form) {
+    setForm (form) {
       this.form = form
       this.validation.mode = form.validationMode
     },
@@ -101,14 +101,14 @@ export default {
      * @param value
      * * @private
      */
-    setValue(value) {
+    setValue (value) {
       this.fModel = value
     },
     /**
      * Altera lista de erros via métodos (externamente, via ref)
      * @param {string[]} errors
      */
-    setErrors(errors) {
+    setErrors (errors) {
       this.methodsErrors = errors
     },
 
@@ -116,7 +116,7 @@ export default {
      * Adiciona novo erro ao field (externamente via método)
      * @param errorDescription
      */
-    addError(errorDescription) {
+    addError (errorDescription) {
       this.methodsErrors.push(errorDescription)
     },
 
@@ -124,7 +124,7 @@ export default {
      * Limpa erros customizados (definidos via prop error ou métodos setError/addError
      * Erros de validação não são limpos pois é gerado pelo próprio form internamente
      */
-    clearErrors() {
+    clearErrors () {
       this.methodsErrors = []
       this.propsErrors = []
     }
@@ -134,10 +134,10 @@ export default {
      * Verifica field está estentendo/mixin este componente
      * @return {boolean}
      */
-    isNuxtFormFieldInstance() {
+    isNuxtFormFieldInstance () {
       return true
     },
-    fieldName() {
+    fieldName () {
       return this.$attrs['field-name']
     },
     /**
@@ -145,7 +145,7 @@ export default {
      *
      * @type {string[]}
      */
-    fErrors() {
+    fErrors () {
       return [].concat(
         this.propsErrors,
         this.methodsErrors,

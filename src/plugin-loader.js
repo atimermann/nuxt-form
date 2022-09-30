@@ -7,12 +7,11 @@
  */
 'use strict'
 
-import NuxtForm from './nuxt-form'
 import path from 'path'
 
-/////////////////////////////////////////////////
+/// //////////////////////////////////////////////
 // Dependência dos fields
-/////////////////////////////////////////////////
+/// //////////////////////////////////////////////
 // Vuetiy Datetime Picker
 import DatetimePicker from 'vuetify-datetime-picker'
 
@@ -21,9 +20,10 @@ import VueCurrencyInput from 'vue-currency-input'
 
 // VuePhoneNumberInput - TODO: alterar CSS para ficar parecido com o material (vuetify)
 import VuePhoneNumberInput from 'vue-phone-number-input'
+import NuxtForm from './nuxt-form'
 import 'vue-phone-number-input/dist/vue-phone-number-input.css'
 
-/////////////////////////////////////////////////
+/// //////////////////////////////////////////////
 const fields = require.context('./fields/', false, /\.vue$/)
 
 // Importação Dinamica de todos os modulos de um diretório
@@ -36,11 +36,9 @@ fields.keys().forEach((resolve, keys, id) => {
 })
 
 export default function (Vue, options) {
-
-
-  /////////////////////////////////////////////////
+  /// //////////////////////////////////////////////
   // Dependência dos fields
-  /////////////////////////////////////////////////
+  /// //////////////////////////////////////////////
 
   // Vuetiy Datetime Picker
   // (Optional) import 'vuetify-datetime-picker/src/stylus/main.styl'
@@ -50,19 +48,17 @@ export default function (Vue, options) {
   Vue.use(VueCurrencyInput)
 
   // VuePhoneNumberInput
-  Vue.component('vue-phone-number-input', VuePhoneNumberInput)
+  Vue.component('VuePhoneNumberInput', VuePhoneNumberInput)
 
-
-  /////////////////////////////////////////////////
+  /// //////////////////////////////////////////////
   // Nuxta Form
-  /////////////////////////////////////////////////
+  /// //////////////////////////////////////////////
 
-  NuxtForm.mixins.push({options})
-  Vue.component('nuxtForm', NuxtForm)
+  NuxtForm.mixins.push({ options })
+  Vue.component('NuxtForm', NuxtForm)
 
   // Carrega automaticamente todos os fields e declara no vue
-  for (let [moduleName, module] of Object.entries(modulesCache)) {
-
+  for (const [moduleName, module] of Object.entries(modulesCache)) {
     const metaMixin = {
       data: function () {
         return {
@@ -70,7 +66,7 @@ export default function (Vue, options) {
           META_FILENAME: `@agtm/nuxt-form/src/fields/${moduleName}.vue`,
           options
         }
-      },
+      }
     }
 
     if (module.mixins) {
@@ -80,7 +76,5 @@ export default function (Vue, options) {
     }
 
     Vue.component(moduleName, module)
-
   }
 }
-
