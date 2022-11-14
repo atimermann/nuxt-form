@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <form>
     <!--    Campos criados manualmente -->
     <slot></slot>
     <div v-for="(field, index) in generatedSchema()" :key="index">
@@ -18,7 +18,7 @@
     <v-alert v-for="(globalError, globalErrorIndex) in globalErrors" :key="'g' + globalErrorIndex" type="error">
       {{ globalError }}
     </v-alert>
-  </div>
+  </form>
 </template>
 
 <script>
