@@ -134,7 +134,7 @@ export default {
 
   },
 
-  mounted() {
+  async mounted() {
     this._mapChildrens(this)
 
     // Verifica se é um Nuxt Model
@@ -158,6 +158,9 @@ export default {
       // Sincroniza form(model) e fields valores vindo da prop
       this.setValues(this.value)
     }
+
+    await this.$nextTick()
+    this.$emit('ready', this)
   },
 
   watch: {

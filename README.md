@@ -786,8 +786,25 @@ Table Editor: https://www.tablesgenerator.com/markdown_tables
 | disableFieldsUpdateByVModel | Boolean                          | true     | Por padrão ao alterar valor de v-model, todos os campos tem seus valores sincronizados com model do formulário  Porém, isto causa um efeito colateral, sempre que um campo altera seu valor,  todo  formulário é atualizado novamente, podendo causar lentidão em formulários muito grande.  Utilize esta opção para melhorar performance nesses casos. |
 | cleanNullValuesOnSubmit     | Boolean                          | true     | Ao carregador valores dos campos ou ao submeter formulário, atributos com valor null, undefined ou objeto vazio {}, são removidos do resultado final.                                                                                                                                                                                                   y|
 
-## TODO: Eventos
+# Eventos
 
+## submit
+
+Disparado quando usuario submete o form
+
+Enviado parametro:
+
+isValid (formulário validado)
+values (lista de valores)
+fieldsComponentIndex (acesso a todas as instancias de campos do form)
+
+TODO: enviar parametro instancia de form
+
+## ready
+
+Disparado quando o formulário tá renderizado e carregado
+
+Enviado parametro form (instancia de form)
 
 ***
 
