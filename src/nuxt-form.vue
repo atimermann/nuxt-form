@@ -260,7 +260,7 @@ export default {
      */
     getValues(model) {
 
-      model = model === undefined
+      model = (model === undefined)
           ? cloneDeep(this.model)
           : model
 
@@ -273,11 +273,11 @@ export default {
         }
 
         if (isPlainObject(value)) {
-          value = this.getValues(value)
+          result[attribute] = this.getValues(value)
           if (Object.keys(value).length === 0 && this.cleanNullValuesOnSubmit) continue
+        } else {
+          result[attribute] = value
         }
-
-        result[attribute] = value
 
       }
 
